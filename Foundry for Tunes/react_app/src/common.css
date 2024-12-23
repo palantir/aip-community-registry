@@ -1,0 +1,175 @@
+/* @import url("https://fonts.googleapis.com/css?family=Fira+Mono:400"); */
+
+/* This is for tbe BetaGuide component */
+.beta-guide li {
+  position: relative;
+  padding-left: 1.6666667em;
+}
+
+.beta-guide li:before {
+  content: "";
+  position: absolute;
+  background-color: #cbd5e0;
+  border-radius: 50%;
+  width: 0.375em;
+  height: 0.375em;
+  top: 0.6875em;
+  left: 0.25em;
+}
+
+/* This needs to be CSS sadly */
+/* See https://blog.phonegap.com/displaying-a-phonegap-app-correctly-on-the-iphone-x-c4a85664c493 */
+/* And https://developer.mozilla.org/en-US/docs/Web/CSS/env */
+/* I'm currently not using "safe-bottom" since it's really not that useful */
+/* Only the top of phones have a notch */
+/* But some iOS phones will have bottom padding which doesn't make much sense  */
+.p-safe-bottom {
+  padding-bottom: constant(safe-area-inset-bottom); /* iOS 11.0 */
+  padding-bottom: env(safe-area-inset-bottom); /* iOS 11.2 */
+}
+
+.p-safe-top {
+  padding-top: constant(safe-area-inset-top); /* iOS 11.0 */
+  padding-top: env(safe-area-inset-top); /* iOS 11.2 */
+}
+
+.m-safe-bottom {
+  margin-bottom: constant(safe-area-inset-bottom); /* iOS 11.0 */
+  margin-bottom: env(safe-area-inset-bottom); /* iOS 11.2 */
+}
+
+.m-safe-top {
+  margin-top: constant(safe-area-inset-top); /* iOS 11.0 */
+  margin-top: env(safe-area-inset-top); /* iOS 11.2 */
+}
+
+@font-face {
+  font-family: "FiraMono";
+  /* We need this since we mount src/shared to dist/shared */
+  src: url("/src/fonts/Apercu-Mono.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "FiraMono";
+  src: url("/src/fonts/Apercu-MonoBold.ttf") format("truetype");
+  font-weight: bold;
+}
+
+/* For Feedback.tsx */
+input[type="radio"] {
+  opacity: 0;
+  position: absolute;
+}
+
+input[type="radio"]:focus + label {
+  outline: rgba(77, 97, 171, 0.5) auto 3px;
+}
+
+.text-2xs {
+  font-size: 0.6875rem;
+}
+
+body {
+  font-family: "FiraMono";
+}
+
+.clamp\-2 {
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+}
+
+.clamp\-3 {
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+}
+
+/* This is just an extra option since dark mode is hard */
+.dark .dark\:bg-gray-950 {
+  background-color: #131821;
+}
+
+.bg-gray-950 {
+  background-color: #131821;
+}
+
+.glitch {
+  animation: glitch 3s linear infinite;
+}
+
+@keyframes glitch {
+  2%,
+  80%,
+  64% {
+    transform: translate(1px, 0) skew(0deg);
+  }
+  3%,
+  62% {
+    transform: translate(-1px, 0) skew(0deg);
+  }
+  70%,
+  61% {
+    transform: translate(0, 0) skew(2deg);
+  }
+  90% {
+    transform: translate(0, 0) skew(-2deg);
+  }
+  94% {
+    transform: translate(0, 0) skew(1deg);
+  }
+  96% {
+    transform: translate(0, 0) skew(-1deg);
+  }
+}
+
+.glitch:before,
+.glitch:after {
+  content: attr(title);
+  position: absolute;
+  left: 0;
+}
+
+.glitch:before {
+  animation: glitchTop 1s linear infinite;
+  clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
+  -webkit-clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
+}
+
+@keyframes glitchTop {
+  2%,
+  64% {
+    transform: translate(2px, -2px);
+  }
+  4%,
+  60% {
+    transform: translate(-2px, 2px);
+  }
+  62% {
+    transform: translate(13px, -1px) skew(-13deg);
+  }
+}
+
+.glitch:after {
+  animation: glitchBotom 1.5s linear infinite;
+  clip-path: polygon(0 67%, 100% 67%, 100% 100%, 0 100%);
+  -webkit-clip-path: polygon(0 67%, 100% 67%, 100% 100%, 0 100%);
+}
+
+@keyframes glitchBotom {
+  2%,
+  64% {
+    transform: translate(-2px, 0);
+  }
+  4%,
+  60% {
+    transform: translate(-2px, 0);
+  }
+  62% {
+    transform: translate(-22px, 5px) skew(21deg);
+  }
+}

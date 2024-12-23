@@ -1,0 +1,36 @@
+.methods {
+  padding: 2em;
+  gap: 2em;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.topLeftSection {
+  position: absolute;
+  text-align: left;
+  top: 20px;
+  left: 20px;
+  padding: 20px;
+  background: black;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.leftSection, .rightSection {
+  width: 48%;
+  text-align:left;
+  background: rgb(21, 21, 21);
+  padding:10px;
+  
+}
+
+.rightSection {
+  display: flex;
+  flex-direction: column;
+}

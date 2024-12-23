@@ -1,0 +1,1 @@
+if you have source code for an osdk frontend app, place it in a folder like this. Make sure you remove any .env, config, or package.lock files so that no enrollement names or client ids are exposed. 

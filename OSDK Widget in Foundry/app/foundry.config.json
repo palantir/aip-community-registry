@@ -1,0 +1,11 @@
+{
+  "foundryUrl": "https://<YOUR ENROLLEMENT>>.palantirfoundry.com",
+  "site": {
+    "application": "<SEE APPLICATION RID IN DEV CONSOLE>",
+    "directory": "./dist",
+    "autoVersion": {
+      "type": "git-describe",
+      "tagPrefix": ""
+    }
+  }
+}
