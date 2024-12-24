@@ -16,7 +16,7 @@ The first step is uploading your package to the Foundry Marketplace:
    - Click the "Upload to Store" button
    - Select your downloaded `.zip` file
 
-![Marketplace Interface](Template/images/image.png)
+![Marketplace Interface](_static/upload_product_banner.png)
 
 ## Install the Package
 
