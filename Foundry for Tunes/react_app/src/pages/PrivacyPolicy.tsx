@@ -1,6 +1,5 @@
 import { NAME, PROD_WEB_ADDR } from "../constants";
 import { H1, H2, P, A } from "../components/markdown";
-import { Footer } from "../sections/Footer";
 
 export const PrivacyPolicy = () => {
   return (
@@ -210,7 +209,6 @@ export const PrivacyPolicy = () => {
           This document was last updated on October 16th, 2024.
         </P>
       </div>
-      <Footer />
     </div>
   );
 };

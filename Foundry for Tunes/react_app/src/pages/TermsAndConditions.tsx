@@ -1,4 +1,3 @@
-import { Footer } from "../sections/Footer";
 import { Link } from "../components/Link";
 import { H1, H2, P } from "../components/markdown";
 import { NAME, PROD_WEB_ADDR } from "../constants";
@@ -155,7 +154,6 @@ export const TermsAndConditions = () => {
           This document was last updated on October 16th, 2024.
         </P>
       </div>
-      <Footer />
     </div>
   );
 };

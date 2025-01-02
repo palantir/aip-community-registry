@@ -1,4 +1,3 @@
-import { Footer } from "../sections/Footer";
 import { PersonMusic } from "../illustrations/PersonMusic";
 import { Feature } from "../components/Feature";
 import { HiOutlineCloudDownload } from "react-icons/hi";
@@ -146,7 +145,6 @@ export const Hero = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </div>
   );
 };
