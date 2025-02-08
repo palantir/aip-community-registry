@@ -1,65 +1,43 @@
-# Contributing to AIP-Community Registry
+# Persecution Monitoring
 
-## Submission Process
+In order to reduce religious persecution and violence, interested parties - e.g. relief organizations, para-church organizations, churches, etc. - must have a reliable situational awareness of what events are happening in their areas of interest.  This package includes an ontology built around churches, dioceses, communions/denominations, individuals, as well as incident reports. The apps include a Church Monitoring App and an Incident Report Feed Viewer.  An AIP Logic function enables the user to compare individual church details with the set of open source incident reports to see which reports are most pertinent base on location.
 
-1. Fork this repository
-2. Package your resources following the template structure
-3. Submit your contribution via pull request
-4. We will review and approve as appropriate
+Learn more in [this video](https://youtu.be/wJqlTnuXSDU)!
 
-## Project Requirements
+## Upload Package to Your Enrollment
 
-### Template Structure
-Your project must follow our standard template structure:
-```
-/your-project-name/
-  /[optional] osdk_app                      # SDK application files
-  /images                                   # Screenshots and demos
-  [optional] project_file.zip               # Marketplace resource file 
-  README.md                                 # Project documentation
-  LICENSE                                   # License information
-```
+The first step is uploading your package to the Foundry Marketplace:
 
-### Documentation Requirements
-1. **README.md** must include:
-    - Clear project description
-    - Installation instructions
-    - Configuration steps
-    - Usage examples
-    - Screenshots/demos
-    - Requirements
+1. Download the project's `.zip` file from this repository
+2. Access your enrollment's marketplace at:
+   ```
+   {enrollment-url}/workspace/marketplace
+   ```
+3. In the marketplace interface, initiate the upload process:
+   - Select or create a store in your preferred project folder
+   - Click the "Upload to Store" button
+   - Select your downloaded `.zip` file
 
-2. **Code Requirements**
-    - Clean, documented code
-    - No malicious or harmful code
-    - No sensitive information
-    - Properly packaged marketplace bundle
+![Marketplace Interface](./../_static/upload_product_banner.png)
 
-## Contribution Steps
+## Install the Package
 
-1. **Use the Template**
-    - Copy the [Template](Template) directory
-    - Follow the structure exactly
-    - Include all required documentation
+After upload, you'll need to install the package in your environment. For detailed instructions, see the [official Palantir documentation](https://www.palantir.com/docs/foundry/marketplace/install-product).
 
-2. **Package Your Resources** (see [PACKAGING.md](PACKAGING.md))
-    - Create marketplace bundle
-    - Test installation process
-    - Verify all dependencies are included
+The installation process has four main stages:
 
-3. **Submit Pull Request**
-    - Fork the repository
-    - Create feature branch
-    - Submit PR with complete documentation
-    - Respond to review feedback
+1. **General Setup**
+   - Configure package name
+   - Select installation location
 
+2. **Input Configuration**
+   - Configure any required inputs. If no inputs are needed, proceed to next step
+   - Check project documentation for specific input requirements
 
-## Questions?
+3. **Content Review**
+   - Review resources to be installed such as Developer Console, the Ontology, and Functions
 
-- Technical questions: Post in [community forums](https://community.palantir.com)
-- Submission status: Email aip-community-registry@palantir.com
-- General inquiries: Please Reach out to aip-community-registry@palantir.com
-
----
-
-*Note: All submissions must align with Palantir's security and compliance requirements. Enterprise-specific implementations should be generalized for the community.*
+4. **Validation**
+   - System checks for any configuration errors
+   - Resolve any flagged issues
+   - Initiate installation
