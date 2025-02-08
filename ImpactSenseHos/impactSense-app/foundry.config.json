@@ -1,0 +1,11 @@
+{
+  "foundryUrl": "https://mermaid.usw-3.palantirfoundry.com",
+  "site": {
+    "application": "ri.third-party-applications.main.application.be670dde-ffeb-445d-8112-11a116c5e762",
+    "directory": "./out",
+    "autoVersion": {
+      "type": "git-describe",
+      "tagPrefix": ""
+    }
+  }
+}

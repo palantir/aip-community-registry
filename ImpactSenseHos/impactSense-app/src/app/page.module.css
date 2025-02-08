@@ -1,0 +1,53 @@
+.methods {
+  padding: 2em;
+  gap: 2em;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 10px;
+  padding-top: 20px;
+}
+
+.left {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.right {
+  width: 100%;
+  padding-left: 50px;
+  padding-right: 100px;
+  padding-top: 20px;
+}
+
+.road-accident {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column; 
+  gap: 50px; 
+}
+
+.info{
+  margin-bottom: 10px; 
+  flex-direction: column;
+}
+
+
+@media (min-width: 768px) {
+  .container {
+    flex-direction: row;
+  }
+
+  .left {
+    width: 40%;
+  }
+
+  .right {
+    width: 60%;
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "name": "impactSense-app",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "next dev -p 8080",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@impactsense/sdk": "^0.15.0",
+    "@mui/material": "^6.4.3",
+    "@osdk/client": "^2.0.13",
+    "@osdk/oauth": "^1.0.1",
+    "@reduxjs/toolkit": "^2.5.1",
+    "axios": "^1.7.9",
+    "dotenv": "^16.4.7",
+    "geolib": "^3.3.4",
+    "langchain": "^0.3.15",
+    "next": "^14.2.16",
+    "openai": "^4.83.0",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-redux": "^9.2.0"
+  },
+  "devDependencies": {
+    "@next/env": "^14.2.16",
+    "@types/node": "^20.17.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "eslint": "^8.57.1",
+    "eslint-config-next": "^14.2.16",
+    "typescript": "~5.5.4",
+    "vitest": "^2.1.3"
+  }
+}
