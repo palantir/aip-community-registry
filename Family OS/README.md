@@ -3,7 +3,9 @@
 
 By Jay Ambadkar
 
-*Please note: a video demo may be available subject to confirmation*
+You can find a video demo [here: https://youtu.be/fzl4UZeCq7M](https://youtu.be/fzl4UZeCq7M). Feel free to leave a like if you enjoy it!
+
+There's also an even deeper dive into the project [here: https://youtu.be/NkCl9Ow4aYA](https://youtu.be/NkCl9Ow4aYA).
 
 ## Project Description
 - This is FamilyOS. An all-in-one tool for your family to streamline your lives, allowing you to spend more time on the things that matter.
