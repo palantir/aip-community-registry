@@ -197,6 +197,10 @@ Now note both this URL and the token for the next stage.
 
 The forwarding server acts as a bridge between WhatsApp webhooks and Foundry Streams. This automates and simplifies the process of getting your messages into Foundry.
 
+> N.B. If you have access to [Listeners](https://www.palantir.com/docs/foundry/data-connection/listeners-overview#inbound-connections) and sufficient domain knowledge, I'd strongly recommend investigating using these for this stage instead of the Flask server described.
+
+> Unfortunately, Listeners is in Beta at time of writing and I don't have access but they seem perfect for this job, though you'd need at least some domain knowledge to get it working as I can't provide detailed instructions for this.
+
 ### Setup the server
 1. **Environment Configuration**
    Create a `.env` file with the following variables:
