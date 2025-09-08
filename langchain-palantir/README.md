@@ -2,11 +2,12 @@
 
 langchain-palantir is a library that allows users to call Palantir-provided LLMs in the LangChain framework. It provides LangChain wrappers around Palantir-provided LLMs, and can be used anywhere Palantir-provided LLMs can be used.
 
+## Installation
 **TODO: Upload Marketplace .zip file. My AIP account is currently an AIP developer tier account and does not support downloading marketplace .zip files.**
 
-## Installation
+Since I do not have a marketplace .zip file yet, the only way to install langchain-palantir currently is to copy or clone the contents of the [GitHub Repository](https://github.com/dragonejt/langchain-palantir.git), upload them to a Palantir Python Library Code Repository, and build a Palantir Python Library from that.
 
-Install langchain-palantir like any other Palantir conda package, with the Libraries left sidebar in a Code Repository or Code Workspace. langchain-palantir currently requires Python version 3.12.10 or later.
+Once built, install langchain-palantir like any other Palantir conda package, with the Libraries left sidebar in a Code Repository or Code Workspace. langchain-palantir currently requires Python version 3.11.10 or later.
 
 ## Supported Features
 
