@@ -12,34 +12,34 @@ New to the platform? Sign up for a [free AIP Developer Account](https://signup.p
 
 | # | Demo | Description | Contributor |
 |---|------|-------------|----------------|
-| 1 | [Personal Gmail and Calendar Connector](/Personal%20Gmail%20and%20Calendar%20Connector/) | SDK enabling a bi-directional interface between your Gmail, Google Calendar, and Palantir Foundry stack. Includes cleaning logic, Ontology layer, and OAuth set-up guide 📤 | Thomas Mosley |
+| 1 | [Personal Gmail and Calendar Connector](/packages/Personal%20Gmail%20and%20Calendar%20Connector/) | SDK enabling a bi-directional interface between your Gmail, Google Calendar, and Palantir Foundry stack. Includes cleaning logic, Ontology layer, and OAuth set-up guide 📤 | Thomas Mosley |
 | 2 | [ElevenLabs Conversational Agent in Workshop Widget](/11labs%20Conversational%20AI%20Agent%20-%20Workshop%20Widget/) | Conversational AI agent workshop widget to provide an interface for 11 labs to interact with Foundry 🤖 | Joseph Chotard |
-| 3 | [OSDK 'Hello World' Project](/OSDK%20'Hello%20World'%20Project/) | A tutorial for using Python to take data from your Ontology and bring into a local Jupyter Lab notebook through the OSDK 🗳️ | Justin Langfan |
-| 4 | [Compute Module 'Hello World' Project](/Compute%20Module%20'Hello%20World'%20Project/) | A tutorial for using Compute Modules to take your organizations codebase and bring it into Foundry 💾 | Justin Langfan |
-| 5 | [Tailbook](/Tailbook/) | An Ontology SDK to monitor global whale sightings and migrating patterns 🐋  | Christopher Knight |
-| 6 | [MetroCycle](/MetroCycle/) | A software platform designed to manage key operations for a bike hire start-up 🚲 | Peter Vigneux | 
-| 7 | [Expense Reporting](/Expense%20Reporting/) | A mobile app SDK developed to allow for corporate expense tracking 🧾 | Ian Ferre | 
-| 8 | [Python Functions for parsing PDF Files with Tesseract OCR](/Python%20Functions%20for%20parsing%20PDF%20Files%20with%20Tesseract%20OCR/) | A guide for converting PDF pages into images and extracting text using OCR with Tesseract 📄 | Andrei Rukavina | 
-| 9 | [Meal Planning](/Meal%20Planning/) | A Computer Vision enabled SDK to photos of your fridge into recipes 🍽️ | Shivam Bansal | 
-| 10 | [Renovation Planner](/Renovation%20Planner/) | A project management app SDK to oversee and assist home renovations  🏡 | Nicholas Watson | 
-| 11 | [Foundry for Tunes](/Foundry%20for%20Tunes/) | A music streaming platform that allows users to upload music and create playlists 🎵 | Jacob Smith | 
-| 12 | [Trip Planner](/Trip%20Planner/) | A logistics app SDK to plan trips by producing bespoke LLM-derived itineraries, centralize key documentation, and manage schedules 🚙 | Ishan Dwivedi | 
-| 13 | [Personal Finances!](/Personal%20Finance/) | A financial app SDK offering customizable transaction, subscription and budgeting views for personal expenses  💳 | Ryan Pregitzer | 
-| 14 | [Peak Explorer](/Peak%20Explorer/) | A mobile app SDK to visualise nearby mountains, report conditions, see summarized reviews and track your ascents 🏔️ | George Cooper | 
-| 15 | [Fashion Assistant](/Fashion%20Assistant/) | A Computer Vision enabled SDK to suggest outfits by considering your current wardrobe contents, weather and personal preferences 👔 | Alexandre Calais | 
-| 16 | [OSDK Widget in Foundry](/OSDK%20Widget%20in%20Foundry/) | A tutorial for creating a custom widget in Workshop for third party libraries or other bespoke requirements 🖼️ | Matthew Steele | 
-| 17 | [Geocoding with Nominatim](/Geocoding%20with%20Nominatim%20and%20Compute%20Modules/) | A production ready package to geocode addresses in bulk and realtime using Nominatim and Compute Modules 🌍 | Joseph Chotard |
-| 18 | [ASWF 2024 Hackathon - HADR Aid](/ASWF-2024Hackathon-HADRAid/) | Rapid response scenario for a fictional typhoon impacting Hawaii using a live streaming pipeline, the Ontology SDK, and a react frontent application 🌀 | Elliott Hamilton |
-| 19 | [ASWF 2024 Hackathon - SARR APP](/ASWF-2024Hackathon-SARR/) | Rapid response scenario for a fictional typhoon impacting Hawaii using the Ontology SDK and a react frontent application 🌀 | Matthew Moellering |
-| 20 | [Gmail Compute Module for Foundry](/GSuite_Send_Email_Compute_Module/) |  A compute module that sends emails via Gmail, using a domain wide delegated service account ✉️ | Christopher Knight |
-| 21 | [WLED Controller and Agent Effect Scheduler](/WLED%20Controller%20and%20Agent%20Effect%20Scheduler/) | Create an automated, context-aware lighting system that responds to holidays 🚨 | Michael Lau |
-| 22 | [Small Business Connector](/Small%20Business%20Connector/) | Connect with other like-minded people with suggestions driven with AIP by leveraging the semantics around your business 💼 | Jay Ambdakar |
-| 23 | [Feedback Loop with AIP Evals](/Feedback%20Loop%20with%20AIP%20Evals/) | Set up a feedback loop where end-users can flag AIP outputs, capturing their feedback in the Ontology. Then leverage that feedback in your AI development cycle by integrating it dynamically into AIP Evals 🔎 | Colton Rusch |
-| 24 | [Integrating a Server with Compute Modules](/Integrating%20a%20Server%20with%20Compute%20Modules/) | Integrate a server into a compute module for Geocoding 🌍 | Dan Perile |
-| 25 | [DevOps for AI Products](/DevOps%20for%20AI%20Products/) | Explore the ticketing workflow demoed at DevCon 2 and develop workflows using marketplace release management ⬆️ | Xinyi Wang |
-| 26 | [OSDK with Media and Derived Properties](/Media%20and%20Derived%20Properties/) | Read and write media to the platform by using OSDK and calculate properties at runtime based on the values of other properties or links on objects  🖼 | Christopher Jeganathan and Landon Carter |
-| 27 | [Push-Based Events](/Push-Based%20Events/) | Provide a mechanism for Foundry to listen to events produced by another system, jira in this example 👂 | Austin Czarnecki |
-| 28 | [Platform Governance App with Platform SDK](/Platform%20Governance%20App%20with%20Platform%20SDK/) | Use the Platform SDK to run transformations in code repositories that pull Foundry metadata (ie users, groups, resources) into datasets 👥 | Andrew Rochat |
+| 3 | [OSDK 'Hello World' Project](/packages/OSDK%20'Hello%20World'%20Project/) | A tutorial for using Python to take data from your Ontology and bring into a local Jupyter Lab notebook through the OSDK 🗳️ | Justin Langfan |
+| 4 | [Compute Module 'Hello World' Project](/packages/Compute%20Module%20'Hello%20World'%20Project/) | A tutorial for using Compute Modules to take your organizations codebase and bring it into Foundry 💾 | Justin Langfan |
+| 5 | [Tailbook](/packages/Tailbook/) | An Ontology SDK to monitor global whale sightings and migrating patterns 🐋  | Christopher Knight |
+| 6 | [MetroCycle](/packages/MetroCycle/) | A software platform designed to manage key operations for a bike hire start-up 🚲 | Peter Vigneux | 
+| 7 | [Expense Reporting](/packages/Expense%20Reporting/) | A mobile app SDK developed to allow for corporate expense tracking 🧾 | Ian Ferre | 
+| 8 | [Python Functions for parsing PDF Files with Tesseract OCR](/packages/Python%20Functions%20for%20parsing%20PDF%20Files%20with%20Tesseract%20OCR/) | A guide for converting PDF pages into images and extracting text using OCR with Tesseract 📄 | Andrei Rukavina | 
+| 9 | [Meal Planning](/packages/Meal%20Planning/) | A Computer Vision enabled SDK to photos of your fridge into recipes 🍽️ | Shivam Bansal | 
+| 10 | [Renovation Planner](/packages/Renovation%20Planner/) | A project management app SDK to oversee and assist home renovations  🏡 | Nicholas Watson | 
+| 11 | [Foundry for Tunes](/packages/Foundry%20for%20Tunes/) | A music streaming platform that allows users to upload music and create playlists 🎵 | Jacob Smith | 
+| 12 | [Trip Planner](/packages/Trip%20Planner/) | A logistics app SDK to plan trips by producing bespoke LLM-derived itineraries, centralize key documentation, and manage schedules 🚙 | Ishan Dwivedi | 
+| 13 | [Personal Finances!](/packages/Personal%20Finance/) | A financial app SDK offering customizable transaction, subscription and budgeting views for personal expenses  💳 | Ryan Pregitzer | 
+| 14 | [Peak Explorer](/packages/Peak%20Explorer/) | A mobile app SDK to visualise nearby mountains, report conditions, see summarized reviews and track your ascents 🏔️ | George Cooper | 
+| 15 | [Fashion Assistant](/packages/Fashion%20Assistant/) | A Computer Vision enabled SDK to suggest outfits by considering your current wardrobe contents, weather and personal preferences 👔 | Alexandre Calais | 
+| 16 | [OSDK Widget in Foundry](/packages/OSDK%20Widget%20in%20Foundry/) | A tutorial for creating a custom widget in Workshop for third party libraries or other bespoke requirements 🖼️ | Matthew Steele | 
+| 17 | [Geocoding with Nominatim](/packages/Geocoding%20with%20Nominatim%20and%20Compute%20Modules/) | A production ready package to geocode addresses in bulk and realtime using Nominatim and Compute Modules 🌍 | Joseph Chotard |
+| 18 | [ASWF 2024 Hackathon - HADR Aid](/packages/ASWF-2024Hackathon-HADRAid/) | Rapid response scenario for a fictional typhoon impacting Hawaii using a live streaming pipeline, the Ontology SDK, and a react frontent application 🌀 | Elliott Hamilton |
+| 19 | [ASWF 2024 Hackathon - SARR APP](/packages/ASWF-2024Hackathon-SARR/) | Rapid response scenario for a fictional typhoon impacting Hawaii using the Ontology SDK and a react frontent application 🌀 | Matthew Moellering |
+| 20 | [Gmail Compute Module for Foundry](/packages/GSuite_Send_Email_Compute_Module/) |  A compute module that sends emails via Gmail, using a domain wide delegated service account ✉️ | Christopher Knight |
+| 21 | [WLED Controller and Agent Effect Scheduler](/packages/WLED%20Controller%20and%20Agent%20Effect%20Scheduler/) | Create an automated, context-aware lighting system that responds to holidays 🚨 | Michael Lau |
+| 22 | [Small Business Connector](/packages/Small%20Business%20Connector/) | Connect with other like-minded people with suggestions driven with AIP by leveraging the semantics around your business 💼 | Jay Ambdakar |
+| 23 | [Feedback Loop with AIP Evals](/packages/Feedback%20Loop%20with%20AIP%20Evals/) | Set up a feedback loop where end-users can flag AIP outputs, capturing their feedback in the Ontology. Then leverage that feedback in your AI development cycle by integrating it dynamically into AIP Evals 🔎 | Colton Rusch |
+| 24 | [Integrating a Server with Compute Modules](/packages/Integrating%20a%20Server%20with%20Compute%20Modules/) | Integrate a server into a compute module for Geocoding 🌍 | Dan Perile |
+| 25 | [DevOps for AI Products](/packages/DevOps%20for%20AI%20Products/) | Explore the ticketing workflow demoed at DevCon 2 and develop workflows using marketplace release management ⬆️ | Xinyi Wang |
+| 26 | [OSDK with Media and Derived Properties](/packages/Media%20and%20Derived%20Properties/) | Read and write media to the platform by using OSDK and calculate properties at runtime based on the values of other properties or links on objects  🖼 | Christopher Jeganathan and Landon Carter |
+| 27 | [Push-Based Events](/packages/Push-Based%20Events/) | Provide a mechanism for Foundry to listen to events produced by another system, jira in this example 👂 | Austin Czarnecki |
+| 28 | [Platform Governance App with Platform SDK](/packages/Platform%20Governance%20App%20with%20Platform%20SDK/) | Use the Platform SDK to run transformations in code repositories that pull Foundry metadata (ie users, groups, resources) into datasets 👥 | Andrew Rochat |
 
 ## Getting Started
 
