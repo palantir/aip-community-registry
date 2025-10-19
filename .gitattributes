@@ -2,3 +2,4 @@ MetroCycle/MetroCycle.zip filter=lfs diff=lfs merge=lfs -text
 *.zip filter=lfs diff=lfs merge=lfs -text
 *.mkt.zip filter=lfs diff=lfs merge=lfs -text
 Personal[[:space:]]Gmail[[:space:]]and[[:space:]]Calendar[[:space:]]Connector/Personal_Ontology_Store.mkt.zip filter=lfs diff=lfs merge=lfs -text
+*.mkt filter=lfs diff=lfs merge=lfs -text
