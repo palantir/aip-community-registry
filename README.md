@@ -1,81 +1,149 @@
-![Build with Palantir](/_static/github_banner.png)
+# Semantic visualization of the Biotech patent database
 
-## AIP Community Registry
+Overview
 
-A list of awesome SDKs, frameworks, and workflows - built on Palantir AIP and contributed by our Developer Community.
+This project is integrated with [pavilions-ai] and implements a semantic search system designed to query technical documents (such as service manuals, patents, and biology research papers). The platform allows users to ask natural-language questions and retrieve the most relevant chunks of information from unstructured documents. It is especially useful for technicians, researchers, and analysts working with large volumes of technical PDFs, enabling fast retrieval of context-aware answers.
 
-[Palantir AIP](https://www.palantir.com/platforms/aip/) is a modular and interoperable developer platform that enables the rapid deployment of AI integrated operations. 
+Features
 
-New to the platform? Sign up for a [free AIP Developer Account](https://signup.palantirfoundry.com/signup?signupPermitCode=BUILD_WITH_AIP&tracking-code=build.palantir.com) today.
+- Semantic Querying: Search across documents using natural language instead of keyword-only search.
+- Chunk-based Retrieval: Documents are split into meaningful text chunks for precise matches.
+- RAG Integration: Uses Retrieval-Augmented Generation (RAG) workflows to provide contextual LLM answers.
+- Entity Extraction: Automatically extracts structured metadata (entities) from documents.
+- Visualization: Interactive graph interface for exploring linked documents and concepts.
+- Embeddings Pipeline: Generates vector embeddings for each text chunk, enabling similarity search.
 
-## Contributions
+Example Use Cases
 
-| # | Demo | Description | Contributor |
-|---|------|-------------|----------------|
-| 1 | [Personal Gmail and Calendar Connector](/Personal%20Gmail%20and%20Calendar%20Connector/) | SDK enabling a bi-directional interface between your Gmail, Google Calendar, and Palantir Foundry stack. Includes cleaning logic, Ontology layer, and OAuth set-up guide 📤 | Thomas Mosley |
-| 2 | [ElevenLabs Conversational Agent in Workshop Widget](/11labs%20Conversational%20AI%20Agent%20-%20Workshop%20Widget/) | Conversational AI agent workshop widget to provide an interface for 11 labs to interact with Foundry 🤖 | Joseph Chotard |
-| 3 | [OSDK 'Hello World' Project](/OSDK%20'Hello%20World'%20Project/) | A tutorial for using Python to take data from your Ontology and bring into a local Jupyter Lab notebook through the OSDK 🗳️ | Justin Langfan |
-| 4 | [Compute Module 'Hello World' Project](/Compute%20Module%20'Hello%20World'%20Project/) | A tutorial for using Compute Modules to take your organizations codebase and bring it into Foundry 💾 | Justin Langfan |
-| 5 | [Tailbook](/Tailbook/) | An Ontology SDK to monitor global whale sightings and migrating patterns 🐋  | Christopher Knight |
-| 6 | [MetroCycle](/MetroCycle/) | A software platform designed to manage key operations for a bike hire start-up 🚲 | Peter Vigneux | 
-| 7 | [Expense Reporting](/Expense%20Reporting/) | A mobile app SDK developed to allow for corporate expense tracking 🧾 | Ian Ferre | 
-| 8 | [Python Functions for parsing PDF Files with Tesseract OCR](/Python%20Functions%20for%20parsing%20PDF%20Files%20with%20Tesseract%20OCR/) | A guide for converting PDF pages into images and extracting text using OCR with Tesseract 📄 | Andrei Rukavina | 
-| 9 | [Meal Planning](/Meal%20Planning/) | A Computer Vision enabled SDK to photos of your fridge into recipes 🍽️ | Shivam Bansal | 
-| 10 | [Renovation Planner](/Renovation%20Planner/) | A project management app SDK to oversee and assist home renovations  🏡 | Nicholas Watson | 
-| 11 | [Foundry for Tunes](/Foundry%20for%20Tunes/) | A music streaming platform that allows users to upload music and create playlists 🎵 | Jacob Smith | 
-| 12 | [Trip Planner](/Trip%20Planner/) | A logistics app SDK to plan trips by producing bespoke LLM-derived itineraries, centralize key documentation, and manage schedules 🚙 | Ishan Dwivedi | 
-| 13 | [Personal Finances!](/Personal%20Finance/) | A financial app SDK offering customizable transaction, subscription and budgeting views for personal expenses  💳 | Ryan Pregitzer | 
-| 14 | [Peak Explorer](/Peak%20Explorer/) | A mobile app SDK to visualise nearby mountains, report conditions, see summarized reviews and track your ascents 🏔️ | George Cooper | 
-| 15 | [Fashion Assistant](/Fashion%20Assistant/) | A Computer Vision enabled SDK to suggest outfits by considering your current wardrobe contents, weather and personal preferences 👔 | Alexandre Calais | 
-| 16 | [OSDK Widget in Foundry](/OSDK%20Widget%20in%20Foundry/) | A tutorial for creating a custom widget in Workshop for third party libraries or other bespoke requirements 🖼️ | Matthew Steele | 
-| 17 | [Geocoding with Nominatim](/Geocoding%20with%20Nominatim%20and%20Compute%20Modules/) | A production ready package to geocode addresses in bulk and realtime using Nominatim and Compute Modules 🌍 | Joseph Chotard |
-| 18 | [ASWF 2024 Hackathon - HADR Aid](/ASWF-2024Hackathon-HADRAid/) | Rapid response scenario for a fictional typhoon impacting Hawaii using a live streaming pipeline, the Ontology SDK, and a react frontent application 🌀 | Elliott Hamilton |
-| 19 | [ASWF 2024 Hackathon - SARR APP](/ASWF-2024Hackathon-SARR/) | Rapid response scenario for a fictional typhoon impacting Hawaii using the Ontology SDK and a react frontent application 🌀 | Matthew Moellering |
-| 20 | [Gmail Compute Module for Foundry](/GSuite_Send_Email_Compute_Module/) |  A compute module that sends emails via Gmail, using a domain wide delegated service account ✉️ | Christopher Knight |
-| 21 | [WLED Controller and Agent Effect Scheduler](/WLED%20Controller%20and%20Agent%20Effect%20Scheduler/) | Create an automated, context-aware lighting system that responds to holidays 🚨 | Michael Lau |
-| 22 | [Small Business Connector](/Small%20Business%20Connector/) | Connect with other like-minded people with suggestions driven with AIP by leveraging the semantics around your business 💼 | Jay Ambdakar |
-| 23 | [Feedback Loop with AIP Evals](/Feedback%20Loop%20with%20AIP%20Evals/) | Set up a feedback loop where end-users can flag AIP outputs, capturing their feedback in the Ontology. Then leverage that feedback in your AI development cycle by integrating it dynamically into AIP Evals 🔎 | Colton Rusch |
-| 24 | [Integrating a Server with Compute Modules](/Integrating%20a%20Server%20with%20Compute%20Modules/) | Integrate a server into a compute module for Geocoding 🌍 | Dan Perile |
-| 25 | [DevOps for AI Products](/DevOps%20for%20AI%20Products/) | Explore the ticketing workflow demoed at DevCon 2 and develop workflows using marketplace release management ⬆️ | Xinyi Wang |
-| 26 | [OSDK with Media and Derived Properties](/Media%20and%20Derived%20Properties/) | Read and write media to the platform by using OSDK and calculate properties at runtime based on the values of other properties or links on objects  🖼 | Christopher Jeganathan and Landon Carter |
-| 27 | [Push-Based Events](/Push-Based%20Events/) | Provide a mechanism for Foundry to listen to events produced by another system, jira in this example 👂 | Austin Czarnecki |
-| 28 | [Platform Governance App with Platform SDK](/Platform%20Governance%20App%20with%20Platform%20SDK/) | Use the Platform SDK to run transformations in code repositories that pull Foundry metadata (ie users, groups, resources) into datasets 👥 | Andrew Rochat |
+1. Manufacturing Manuals: A technician can ask “How do I reset the dispensing system?” and retrieve the relevant manual section.
+2. Biology Research: A researcher can query “What is BBB delivery in biology?” and get an explanation of blood-brain barrier delivery methods (nanoparticles, receptor-mediated transport, ultrasound, etc.).
+3. Patents: Analysts can semantically search patents for mentions of specific technologies or claims.
 
-## Getting Started
+System Workflow
 
-### For Contributors
-If you have built something impactful on AIP, please follow the instructions in [CONTRIBUTING.md](CONTRIBUTING.md) to get it added here!
+The pipeline follows these main steps (see pipeline diagram screenshot):
+1. PDF Ingestion
+- Input: Technical manuals, patents, or scientific papers.
+2. Text Extraction
+- Extracts unstructured text from PDFs.
+3. Entity Extraction (LLM)
+- Uses an LLM to identify and tag relevant entities (e.g., drugs, proteins, systems).
+4. Preprocessing & Chunking
+- Splits documents into smaller, semantically meaningful chunks.
+5. Embedding Generation
+- Each chunk is converted into vector embeddings.
+6. Vector Database Storage
+- Stores embeddings for fast similarity-based retrieval.
+7. Semantic Search & RAG
+- Queries are embedded and matched against stored chunks.
+- Retrieved context is passed to an LLM to generate an answer
+<img width="1724" height="368" alt="ad0d58522c425ef47840afe306e0caff" src="https://github.com/user-attachments/assets/5c9282e7-2789-489e-ad3e-a83d66fc0744" />
 
-### For Users
-1. Browse the table above to find relevant examples
-2. Follow the [Installation Guide](INSTALLATION.md) to deploy the package to your Foundry environment
-3. Refer to instructions found in the project folder for any additional installation or configuration steps
+User Interface
 
-#### Installation - Quick Reference:
-1. Download package `.zip` file
-2. Upload Zip File on your Dev Tier Enrollment. Note: Enterprise Users may need work with Platform Admins to enable manual uploads via Marketplace
-3. Follow package-specific configuration steps
-4. Configure SDK components (if applicable)
+- Search Box: Type natural-language questions.
+- Results Panel: Shows most relevant chunks retrieved from documents.
+- LLM Response Panel: Displays contextualized answer generated by the LLM.
+- Graph Explorer: Interactive view of related documents and entities.
+<img width="1398" height="910" alt="947b6967a73fd000739b4a98815cdc42" src="https://github.com/user-attachments/assets/b840a0d2-8f8e-4833-a458-35ad6baae5fc" />
+<img width="1886" height="1538" alt="07eccea2a86de237a4b73cd5d7738296" src="https://github.com/user-attachments/assets/8d04e1fb-5d70-4e2a-a0be-251828ce1e6a" />
 
-## Security Guidelines
+Tech Stack
 
-- Never commit sensitive credentials or data
-- Follow security best practices
+- Document Processing: PDF text extraction
+- LLM: For entity extraction and RAG responses
+- Embeddings: Vector representations for semantic similarity
+- Visualization: Interactive graph and chunk inspection tools
+- Pipeline Orchestration: End-to-end processing with checkpoints
 
-## Resources & Support
+Future Improvements
 
-- Docs: [Palantir Documentation](https://docs.palantir.com)
-- Questions: Use our [Developer Forum](https://community.palantir.com/tag/aip-community-registry)
-- Project issues: Create an issue in the relevant project directory
+- Add multi-document summarization for long queries.
+- Expand to support audio/video transcripts.
+- Optimize chunking strategy for larger documents.
+- Incorporate domain-specific embeddings for higher accuracy.
+- Replace the input documents of the pipeline with your own  datasets
+- Adjust the entity selection box to customize  your own entities
 
-## License
+How to Use
 
-Please refer to [License](LICENSE)
+1. Upload documents (PDFs).
+2. Enter a natural-language question in the search box.
+3. Review results in:
+   - Relevant Chunks (direct document matches)
+   - LLM Response (context-aware explanation)
+4. Explore document relationships in the graph view.
 
----
+Contact
 
-> 🚀 Ready to build? [Start Building](https://signup.palantirfoundry.com/signup?signupPermitCode=BUILD_WITH_AIP&tracking-code=build.palantir.com) or [Explore the Catalogue](https://www.palantir.com/developers)
+If you have any questions about this project, feel free to contact Peixin <peixin@pavilions.ai> and Ziyue <ziyueyin7@gmail.com>
+   
+## Upload Package to Your Enrollment
 
----
+The first step is uploading your package to the Foundry Marketplace:
 
-*This is a community-driven registry. Projects are built by the community and are not officially supported by Palantir Technologies.*
+1. Download the project's `.zip` file from this repository
+2. Access your enrollment's marketplace at:
+   ```
+   {enrollment-url}/workspace/marketplace
+   ```
+3. In the marketplace interface, initiate the upload process:
+   - Select or create a store in your preferred project folder
+   - Click the "Upload to Store" button
+   - Select your downloaded `.zip` file
+
+![Marketplace Interface](./../_static/upload_product_banner.png)
+
+## Install the Package
+
+After upload, you'll need to install the package in your environment. For detailed instructions, see the [official Palantir documentation](https://www.palantir.com/docs/foundry/marketplace/install-product).
+
+The installation process has four main stages:
+
+1. **General Setup**
+   - Configure package name
+   - Select installation location
+
+2. **Input Configuration**
+   - Configure any required inputs. If no inputs are needed, proceed to next step
+   - Check project documentation for specific input requirements
+
+3. **Content Review**
+   - Review resources to be installed such as Developer Console, the Ontology, and Functions
+
+4. **Validation**
+   - System checks for any configuration errors
+   - Resolve any flagged issues
+   - Initiate installation
+
+
+## SDK Configuration (Optional)
+
+Some packages include applications built with the Ontology SDK. These require additional setup:
+
+1. Locate the SDK application code in the `app/` directory of the project repository
+
+2. The following details will need to added to the source code for the application.  
+   - Navigate to Developer Console: `{enrollment-url}/workspace/developer-console`
+   - Find the installed application
+   - Copy the following details:
+     - CLIENT ID
+     - Enrollment URL `{enrollment-url}.palantirfoundry.com`
+
+3. Configure your development environment:
+   - Add to `env.development` file under `app/`
+   - (optional) Configure CORS in your control panel to allow `http://localhost:8080`
+
+### Local Development
+<p align="center">
+<img width="650" src=./../_static/start%20developing.png>
+</p>
+
+**To run the application locally:**
+1. Access the Developer Console's "Start Developing" section
+2. Follow the "Add Ontology SDK" setup process)
+3. In the `/app` directory, start the development server:
+   ```sh
+   npm run dev
+   ```
+   This will launch your application at `http://localhost:8080`
