@@ -1,0 +1,3 @@
+[submodule "langchain-palantir/src"]
+	path = langchain-palantir/src
+	url = https://github.com/dragonejt/langchain-palantir.git
