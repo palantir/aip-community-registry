@@ -1,0 +1,38 @@
+{
+  "resources": {
+    "ontologies": [ {
+      "identifier": {
+        "rid": "ri.ontology.main.ontology.302f7f6f-3359-4d72-802a-36e1f8ea075c"
+      },
+      "verbs": [ "ONTOLOGIES_READ" ]
+    } ],
+    "objects": [ {
+      "identifier": {
+        "rid": "ri.ontology.main.object-type.1d7a73ad-3b6e-4a19-aac3-d1f3f81361d4"
+      },
+      "verbs": [ "ONTOLOGIES_READ" ]
+    }, {
+      "identifier": {
+        "rid": "ri.ontology.main.object-type.266b42a6-a008-4918-94e7-bd3c184d98d0"
+      },
+      "verbs": [ "ONTOLOGIES_READ" ]
+    } ],
+    "links": [ {
+      "identifier": {
+        "rid": "ri.ontology.main.relation.296b9a05-8755-4fa2-b8cd-ece85959cc8b"
+      },
+      "verbs": [ "ONTOLOGIES_READ" ]
+    } ],
+    "interfaces": [ ],
+    "valueTypes": [ ],
+    "queries": [ ],
+    "osdks": [ ],
+    "models": [ ],
+    "custom": { }
+  },
+  "egress": {
+    "connections": [ ]
+  },
+  "_comment": "DO NOT DELETE THIS FILE. MODIFYING CONTENTS MANUALLY MAY RESULT IN COMPILE ERRORS",
+  "version": 1
+}

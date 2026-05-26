@@ -1,0 +1,1 @@
+apply plugin: "com.palantir.functions.typescript-osdk"

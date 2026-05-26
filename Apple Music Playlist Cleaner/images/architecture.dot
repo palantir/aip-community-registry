@@ -1,0 +1,91 @@
+digraph Architecture {
+    rankdir=LR;
+    bgcolor="white";
+    node [fontname="Helvetica", fontsize=11, shape=box, style="rounded,filled", margin="0.15,0.1"];
+    edge [fontname="Helvetica", fontsize=9, color="#555555"];
+
+    subgraph cluster_external {
+        label="Local (one-time setup)";
+        style="rounded,dashed";
+        color="#999999";
+        fontname="Helvetica";
+        fontsize=10;
+        labelloc=b;
+
+        apple [label="Apple Music API\napi.music.apple.com", fillcolor="#FFE5E5", color="#CC3333"];
+        scripts [label="Python scripts\nget_user_token.py\nfetch_library.py", fillcolor="#FFEFD6"];
+        rawjson [label="raw_*.json\n(playlists, songs,\nmemberships)", fillcolor="#E8E8E8", shape=cylinder];
+    }
+
+    subgraph cluster_foundry {
+        label="Palantir Foundry";
+        style="rounded,filled";
+        fillcolor="#F4F8FB";
+        color="#3B7DB8";
+        fontname="Helvetica";
+        fontsize=11;
+        labelloc=t;
+
+        subgraph cluster_ingestion {
+            label="Ingestion";
+            style="rounded,dashed";
+            color="#888888";
+            fontname="Helvetica";
+            fontsize=9;
+
+            rawds [label="Raw datasets\n(uploaded JSON)", fillcolor="#E8E8E8", shape=cylinder];
+            transforms [label="PySpark transforms\ntransform_playlists\ntransform_songs\ntransform_memberships", fillcolor="#DDEBF7"];
+            clean [label="Clean datasets\n(Parquet)", fillcolor="#E8E8E8", shape=cylinder];
+        }
+
+        subgraph cluster_ontology {
+            label="Ontology";
+            style="rounded,dashed";
+            color="#888888";
+            fontname="Helvetica";
+            fontsize=9;
+
+            song [label="Song", fillcolor="#FFF4D6", shape=box3d];
+            playlist [label="Playlist", fillcolor="#FFF4D6", shape=box3d];
+            link [label="Playlist <-> Song\nlink", fillcolor="#FFE9B3", shape=box3d];
+        }
+
+        subgraph cluster_logic {
+            label="Logic";
+            style="rounded,dashed";
+            color="#888888";
+            fontname="Helvetica";
+            fontsize=9;
+
+            functions [label="TypeScript Function\nmoveSongToPlaylist", fillcolor="#D6F0DD"];
+            actions [label="Action Types\nKeep / Remove / Move\nCreate / Delete Playlist", fillcolor="#D6F0DD"];
+        }
+
+        workshop [label="Workshop App\nPlaylist Cleaner", fillcolor="#E8DDF5"];
+    }
+
+    user [label="User", fillcolor="#FAFAFA", shape=ellipse];
+
+    apple -> scripts [label="developer token +\nMusic-User-Token"];
+    scripts -> rawjson;
+    rawjson -> rawds [label="upload"];
+    rawds -> transforms;
+    transforms -> clean;
+    clean -> song [style=dashed];
+    clean -> playlist [style=dashed];
+    clean -> link [style=dashed];
+
+    song -> link [arrowhead=none, color="#888888"];
+    playlist -> link [arrowhead=none, color="#888888"];
+
+    actions -> song [label="edit"];
+    actions -> playlist [label="create / delete"];
+    actions -> link [label="add / remove"];
+    functions -> actions [arrowhead=none, style=dotted, label="backs Move"];
+
+    workshop -> actions [label="triggers"];
+    workshop -> song [label="reads", style=dashed];
+    workshop -> playlist [label="reads", style=dashed];
+
+    user -> workshop [label="reviews songs"];
+}
