@@ -6,9 +6,11 @@
 
 This section defines the account, credential, networking, access-control, and governance prerequisites for operating Plaid in the FORGE production environment. It intentionally precedes the application architecture and connection runbook so that production controls are established before implementation or operations begin.
 
+You should know that this package contains 16 object types, 22 links types, and 37 action types. The ceiling for each on any given dev tier environment is 60 of each.
+
 > **Production safety boundary:** Do not use real financial data until organizational security, privacy, legal, governance, and Plaid production-access reviews are complete. The browser must never receive Plaid client secrets, Plaid access tokens, encryption keys, or source credentials.
 
-## A. Configure and approve the Plaid Production account
+## A. Configure and approve the Plaid Production account -> Repeat this process for a Sandbox connection
 
 ### Account ownership and security
 
