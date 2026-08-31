@@ -10,7 +10,7 @@ You should know that this package contains 16 object types, 22 links types, and 
 
 > **Production safety boundary:** Do not use real financial data until organizational security, privacy, legal, governance, and Plaid production-access reviews are complete. The browser must never receive Plaid client secrets, Plaid access tokens, encryption keys, or source credentials.
 
-## A. Configure and approve the Plaid Production account -> Repeat this process for a Sandbox connection
+## A. Configure and approve the Plaid Production account
 
 ### Account ownership and security
 
