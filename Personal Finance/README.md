@@ -259,12 +259,13 @@ Budget, Category, Subscription, Discount, Member, Bill, Billing Report, and Arch
 
 ### Add or update a connection
 
-1. The FORGE Accounts surface supplies the current user to the embedded Plaid Authentication application.
-2. The application requests a Plaid Link token for the current environment and launches Plaid Link.
-3. After successful institution authentication, Plaid returns a short-lived public token and connection metadata.
-4. The Add Plaid Link Token action exchanges the public token server-side and stores the encrypted access token plus connection metadata in the Plaid Link Token object.
-5. The scheduled Plaid Data build reads the restricted export, decrypts the access token only in memory, and begins account and transaction synchronization.
-6. Verify the next successful pull, parsed account health, Ontology indexing, and visibility in both FORGE applications.
+1. The FORGE Accounts tab widget routes the current user to the embedded Plaid Authentication application via the '+Add Account' button on the top right.
+2. BEFORE linking a new account, however, you must create a budget, even if it is nominal. This is a dependency for all of the categorization functions to run - you will be able to edit them after the fact and correct the breakages, but I really recommend creating some kind of budget on the 'Budget' tab.
+3. The application requests a Plaid Link token for the current environment and launches Plaid Link.
+4. After successful institution authentication, Plaid returns a short-lived public token and connection metadata.
+5. The Add Plaid Link Token action exchanges the public token server-side and stores the encrypted access token plus connection metadata in the Plaid Link Token object.
+6. The scheduled Plaid Data build reads the restricted export, decrypts the access token only in memory, and begins account and transaction synchronization.
+7. Verify the next successful pull, parsed account health, Ontology indexing, and visibility in both FORGE applications.
 
 ### Cursor lifecycle
 
