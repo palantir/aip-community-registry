@@ -40,6 +40,7 @@ New to the platform? Sign up for a [free AIP Developer Account](https://signup.p
 | 26 | [OSDK with Media and Derived Properties](/Media%20and%20Derived%20Properties/) | Read and write media to the platform by using OSDK and calculate properties at runtime based on the values of other properties or links on objects  🖼 | Christopher Jeganathan and Landon Carter |
 | 27 | [Push-Based Events](/Push-Based%20Events/) | Provide a mechanism for Foundry to listen to events produced by another system, jira in this example 👂 | Austin Czarnecki |
 | 28 | [Platform Governance App with Platform SDK](/Platform%20Governance%20App%20with%20Platform%20SDK/) | Use the Platform SDK to run transformations in code repositories that pull Foundry metadata (ie users, groups, resources) into datasets 👥 | Andrew Rochat |
+| 29 | [GPT-GlassOnion](/GPT-GlassOnion/) | Governed geospatial ontology and bounded 24-specialist agent framework for AIP and Zyra, with GeoJSON mapping, provenance, audit controls, and evidence synthesis 🧅🌍 | Douglas Brown Jr. |
 
 ## Getting Started
 

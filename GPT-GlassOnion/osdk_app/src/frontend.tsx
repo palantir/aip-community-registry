@@ -1,0 +1,12 @@
+import React, { useEffect, useState } from "react";
+import { createRoot } from "react-dom/client";
+import type { Health, SwarmResult } from "./shared";
+
+const css=`:root{font-family:Inter,system-ui;color:#eef2ff;background:#0b1020}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#281346,#0b1020 55%)}main{max-width:1100px;margin:auto;padding:40px 22px}h1{font-size:clamp(2.2rem,7vw,5rem);margin:0;background:linear-gradient(90deg,#58e6ff,#b56cff,#ff70d5);color:transparent;background-clip:text}.sub{color:#b8c1ff}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;margin:28px 0}.card{background:#121a30cc;border:1px solid #344267;border-radius:18px;padding:20px}.ok{color:#67f0bd}textarea{width:100%;min-height:110px;background:#0b1020;color:white;border:1px solid #526286;border-radius:14px;padding:14px}button{margin-top:12px;border:0;border-radius:999px;padding:13px 22px;font-weight:800;background:linear-gradient(90deg,#58e6ff,#b56cff);cursor:pointer}pre{white-space:pre-wrap;max-height:330px;overflow:auto;color:#dce4ff}`;
+function App(){
+ const [health,setHealth]=useState<Health|null>(null),[objective,setObjective]=useState("Map public climate resilience resources in Virginia"),[result,setResult]=useState<SwarmResult|null>(null),[busy,setBusy]=useState(false);
+ useEffect(()=>{fetch("/api/health").then(r=>r.json()).then(setHealth)},[]);
+ async function run(){setBusy(true);setResult(await fetch("/api/swarm/run",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({objective})}).then(r=>r.json()));setBusy(false)}
+ return <><style>{css}</style><main><h1>GPT-GlassOnion</h1><p className="sub">Governed geospatial intelligence for Palantir AIP + Zyra</p><div className="grid"><div className="card"><b>Cloud health</b><p className="ok">{health?.status??"checking"}</p></div><div className="card"><b>Foundry OSDK</b><p>{health?.foundryConfigured?"configured":"awaiting tenant variables"}</p></div><div className="card"><b>Agent plan</b><p>3 → 6 → 7 → 9</p></div><div className="card"><b>Governance</b><p>citations · lineage · audit</p></div></div><section className="card"><h2>Run governed analysis</h2><textarea value={objective} onChange={e=>setObjective(e.target.value)}/><button disabled={busy} onClick={run}>{busy?"Running 25 executions…":"Run GlassOnion"}</button>{result&&<pre>{JSON.stringify(result,null,2)}</pre>}</section></main></>;
+}
+createRoot(document.getElementById("root")!).render(<App/>);

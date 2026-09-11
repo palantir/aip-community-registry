@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="820" viewBox="0 0 1400 820" role="img" aria-labelledby="title desc">
+<title id="title">GPT-GlassOnion governed intelligence flow</title>
+<desc id="desc">A cinematic animated diagram showing authorized data moving through governance, ontology, geospatial intelligence, 24 bounded specialists, human review, and Zyra output.</desc>
+<defs>
+  <radialGradient id="space" cx="50%" cy="45%" r="72%"><stop offset="0" stop-color="#13234a"/><stop offset=".48" stop-color="#080d20"/><stop offset="1" stop-color="#02040b"/></radialGradient>
+  <linearGradient id="cyan" x1="0" x2="1"><stop stop-color="#00d9ff"/><stop offset=".5" stop-color="#b9fbff"/><stop offset="1" stop-color="#00f0b5"/></linearGradient>
+  <linearGradient id="violet" x1="0" x2="1"><stop stop-color="#7c3cff"/><stop offset=".5" stop-color="#f146ff"/><stop offset="1" stop-color="#ff8a00"/></linearGradient>
+  <filter id="glow"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="soft"><feGaussianBlur stdDeviation="18"/></filter>
+  <pattern id="grid" width="42" height="42" patternUnits="userSpaceOnUse"><path d="M42 0H0V42" fill="none" stroke="#1b3b64" stroke-width="1"/></pattern>
+  <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#62efff"/></marker>
+</defs>
+<style>
+  .panel{fill:#071126;stroke:#244e79;stroke-width:1.5}.label{font-family:Arial,sans-serif;fill:#fff;text-anchor:middle}.micro{font-family:Arial,sans-serif;fill:#8fb7d8;text-anchor:middle;letter-spacing:1px}.route{fill:none;stroke:#2c688e;stroke-width:3;stroke-dasharray:10 13;marker-end:url(#arrow);animation:dash 2.8s linear infinite}.pulse{animation:pulse 2.4s ease-in-out infinite;transform-origin:center}.orbit{transform-origin:700px 390px;animation:spin 16s linear infinite}.scan{animation:scan 4s ease-in-out infinite}.float{animation:float 3s ease-in-out infinite}.delay{animation-delay:-1.2s}@keyframes dash{to{stroke-dashoffset:-46}}@keyframes pulse{50%{opacity:.5;transform:scale(.97)}}@keyframes spin{to{transform:rotate(360deg)}}@keyframes scan{0%,100%{transform:translateY(-155px);opacity:0}20%,80%{opacity:.7}50%{transform:translateY(155px)}}@keyframes float{50%{transform:translateY(-7px)}}@media(prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+<rect width="1400" height="820" rx="32" fill="url(#space)"/><rect width="1400" height="820" rx="32" fill="url(#grid)" opacity=".42"/>
+<ellipse cx="700" cy="400" rx="420" ry="260" fill="#154f99" opacity=".12" filter="url(#soft)"/>
+<text x="700" y="65" class="label" font-size="38" font-weight="800" letter-spacing="7">GPT–GLASSONION</text>
+<text x="700" y="100" class="micro" font-size="15">GOVERNED GEOSPATIAL INTELLIGENCE • SONOXO × ZYRA</text>
+<g class="orbit" opacity=".48"><ellipse cx="700" cy="390" rx="228" ry="228" fill="none" stroke="#8154ff" stroke-width="2" stroke-dasharray="7 18"/><circle cx="928" cy="390" r="7" fill="#f146ff" filter="url(#glow)"/></g>
+<circle cx="700" cy="390" r="143" fill="#080f24" stroke="url(#violet)" stroke-width="3" filter="url(#glow)" class="pulse"/>
+<circle cx="700" cy="390" r="108" fill="none" stroke="#3d76a5" stroke-width="1.5" stroke-dasharray="4 10"/>
+<path d="M700 300c-54 0-88 36-88 89 0 58 39 101 88 124 49-23 88-66 88-124 0-53-34-89-88-89Z" fill="#111d3d" stroke="url(#cyan)" stroke-width="3"/>
+<text x="700" y="370" class="label" font-size="23" font-weight="700">GOVERNED</text><text x="700" y="402" class="label" font-size="23" font-weight="700">ONTOLOGY CORE</text><text x="700" y="438" class="micro" font-size="13">PROVENANCE • POLICY • AUDIT</text>
+<rect x="584" y="230" width="232" height="4" rx="2" fill="url(#cyan)" filter="url(#glow)" class="scan"/>
+<g class="float"><rect class="panel" x="60" y="180" width="270" height="126" rx="22"/><rect x="60" y="180" width="7" height="126" rx="3" fill="#00d9ff"/><text x="195" y="220" class="micro" font-size="13">01 • INPUT</text><text x="195" y="252" class="label" font-size="21" font-weight="700">AUTHORIZED SOURCES</text><text x="195" y="280" class="micro" font-size="12">PUBLIC OR APPROVED DATA</text></g>
+<g class="float delay"><rect class="panel" x="60" y="510" width="270" height="126" rx="22"/><rect x="60" y="510" width="7" height="126" rx="3" fill="#00f0b5"/><text x="195" y="550" class="micro" font-size="13">02 • SPATIAL LAYER</text><text x="195" y="582" class="label" font-size="21" font-weight="700">GEOJSON MAP</text><text x="195" y="610" class="micro" font-size="12">POINT • LINE • POLYGON</text></g>
+<g class="float delay"><rect class="panel" x="1070" y="180" width="270" height="126" rx="22"/><rect x="1333" y="180" width="7" height="126" rx="3" fill="#f146ff"/><text x="1205" y="220" class="micro" font-size="13">03 • EXECUTION</text><text x="1205" y="252" class="label" font-size="21" font-weight="700">24 SPECIALISTS</text><text x="1205" y="280" class="micro" font-size="12">3 → 6 → 7 → 9 BOUNDED WAVES</text></g>
+<g class="float"><rect class="panel" x="1070" y="510" width="270" height="126" rx="22"/><rect x="1333" y="510" width="7" height="126" rx="3" fill="#ff9a24"/><text x="1205" y="550" class="micro" font-size="13">04 • DECISION</text><text x="1205" y="582" class="label" font-size="21" font-weight="700">HUMAN REVIEW</text><text x="1205" y="610" class="micro" font-size="12">SYNTHESIS • APPROVAL • ZYRA</text></g>
+<path class="route" d="M330 243C455 243 472 318 556 351"/><path class="route" d="M330 573C458 573 476 480 563 438"/><path class="route" d="M842 350C938 314 957 243 1070 243"/><path class="route" d="M841 440C936 480 962 573 1070 573"/>
+<g transform="translate(360 711)"><rect width="680" height="58" rx="29" fill="#071126" stroke="#244e79"/><circle cx="38" cy="29" r="8" fill="#00f0b5" class="pulse"/><text x="76" y="35" fill="#bcecff" font-family="Arial,sans-serif" font-size="15">CI VERIFIED</text><text x="215" y="35" fill="#4a6b86" font-family="Arial,sans-serif" font-size="15">•</text><text x="245" y="35" fill="#bcecff" font-family="Arial,sans-serif" font-size="15">TAMPER-EVIDENT</text><text x="425" y="35" fill="#4a6b86" font-family="Arial,sans-serif" font-size="15">•</text><text x="455" y="35" fill="#ffca8c" font-family="Arial,sans-serif" font-size="15">FOUNDRY TENANT: PENDING</text></g>
+<text x="700" y="800" class="micro" font-size="11">REFERENCE ARCHITECTURE • NO CREDENTIALS OR CUSTOMER DATA INCLUDED</text>
+</svg>

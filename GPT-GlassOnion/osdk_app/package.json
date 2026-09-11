@@ -1,0 +1,41 @@
+{
+  "name": "gpt-glassonion",
+  "version": "0.2.0",
+  "private": false,
+  "type": "module",
+  "description": "Full-stack TypeScript geospatial ontology and governed agent fleet for Palantir AIP and Zyra",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "vite",
+    "dev:api": "tsx src/server.ts",
+    "build": "npm run build:web && npm run build:server",
+    "build:web": "vite build",
+    "build:server": "tsc --outDir dist/server --noEmit false",
+    "start": "node dist/server/server.js",
+    "demo": "tsx src/demo.ts",
+    "test": "node --import tsx --test test/*.test.ts",
+    "check": "tsc --noEmit",
+    "evidence": "node scripts/generate-evidence.mjs",
+    "quality": "npm run check && npm test && npm run build && npm run evidence"
+  },
+  "dependencies": {
+    "@fastify/static": "^8.3.0",
+    "@osdk/client": "^2.24.0",
+    "@osdk/oauth": "^1.0.1",
+    "fastify": "^5.6.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+  },
+  "devDependencies": {
+    "@types/geojson": "^7946.0.16",
+    "@types/node": "^24.3.0",
+    "@types/react": "^19.1.12",
+    "@types/react-dom": "^19.1.9",
+    "@vitejs/plugin-react": "^5.0.2",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2",
+    "vite": "^7.1.4"
+  }
+}
