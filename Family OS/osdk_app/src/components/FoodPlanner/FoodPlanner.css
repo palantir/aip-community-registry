@@ -1,0 +1,135 @@
+.food-planner-container {
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.food-planner-header {
+  text-align: center;
+  margin: 30px 0;
+}
+
+.food-planner-header h1 {
+  font-size: 2.2rem;
+  color: var(--primary-color);
+  margin-bottom: 10px;
+}
+
+.favorite-foods {
+  max-width: 600px;
+  margin: 30px auto;
+  padding: 15px;
+  background-color: #f0f8ff;
+  border-radius: 8px;
+}
+
+.favorite-foods h3 {
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+  color: var(--primary-color);
+}
+
+.food-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.food-tag {
+  background-color: var(--secondary-color);
+  color: white;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+}
+
+.weekly-planner {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.day-planner {
+  padding: 25px;
+}
+
+.day-planner h3 {
+  font-size: 1.5rem;
+  color: var(--primary-color);
+  margin-bottom: 20px;
+  border-bottom: 2px solid var(--secondary-color);
+  padding-bottom: 10px;
+}
+
+.food-options {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.food-option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background-color: #f5f8ff;
+  border-radius: 8px;
+}
+
+.food-info {
+  flex: 1;
+}
+
+.food-info h4 {
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+}
+
+.food-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.vote-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.vote-button {
+  font-size: 1.3rem;
+  padding: 8px;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.vote-button.like {
+  background-color: #e6f7ee;
+}
+
+.vote-button.dislike {
+  background-color: #ffeef0;
+}
+
+.vote-button:hover {
+  transform: scale(1.1);
+}
+
+.vote-success {
+  background-color: var(--success-color);
+  color: white;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  margin: 20px auto;
+  max-width: 500px;
+}

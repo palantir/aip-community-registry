@@ -1,0 +1,24 @@
+{
+  "name": "send-email-module",
+  "version": "1.0.0",
+  "description": "Foundry compute module for sending emails via Gmail API",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "NODE_ENV=test node src/test.js"
+  },
+  "dependencies": {
+    "@palantir/compute-module": "^0.2.7",
+    "@sinclair/typebox": "^0.32.14",
+    "dotenv": "^16.5.0",
+    "googleapis": "^129.0.0",
+    "readline": "^1.3.0"
+  },
+  "engines": {
+    "node": ">=20.10.0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}
