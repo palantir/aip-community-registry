@@ -1,317 +1,452 @@
-# *FORGE Production Application & Data Architecture*
+# Plaid Foundry Integration
 
-## *WARNING* This package has not been fully tested. Please reach out on community.palantir.com if you have issues with installation or configuration.
+> **Warning:** This package has been tested but is a simplification of a more complex workflow. If you have trouble installing or configuring it, post on the Palantir Community forum.
 
-# Foundry Environment Setup
+## Scope
 
-This section defines the account, credential, networking, access-control, and governance prerequisites for operating Plaid in the FORGE production environment. It intentionally precedes the application architecture and connection runbook so that production controls are established before implementation or operations begin.
+This document covers the Plaid Foundry Integration:
 
-You should know that this package contains 16 object types, 22 links types, and 37 action types. The ceiling for each on any given dev tier environment is 60 of each.
+* **Plaid ingestion.** Accounts, banking transactions, investment holdings and investment activity from Plaid Production.
 
-> **Production safety boundary:** Do not use real financial data until organizational security, privacy, legal, governance, and Plaid production-access reviews are complete. The browser must never receive Plaid client secrets, Plaid access tokens, encryption keys, or source credentials.
+* **The parsing and curation pipelines** that turn raw API responses into Ontology backing datasets.
 
-## A. Configure and approve the Plaid Production account
+* **The Ontology object types** built on those datasets, and the rules for calculating with them.
+
+* **The Plaid App Integration workflow** (Part 5), which links, re-authenticates and disconnects institutions and writes the **Link Token** objects that the pipeline reads.
+
+Downstream applications built on this data, such as dashboards, budgeting tools and review workflows, are out of scope.
+
+> **Production safety boundary:** Don't use real financial data until your organization's security, privacy, legal, governance and Plaid production-access reviews are complete. Plaid client secrets, Plaid access tokens, encryption keys and source credentials must never reach a browser, a notebook output, a log or this documentation.
+
+***
+
+# Part 1: Environment Setup
+
+## A. Get Plaid Production access
 
 ### Account ownership and security
 
-1. Create or transfer the Plaid account to an organization-controlled identity rather than an individual employee's personal account.
-2. Verify the account email, enable multi-factor authentication, and configure appropriate administrator and developer roles.
-3. Record the business owner, technical owner, security reviewer, and production support contact and complete the production questionnaire.
-   a. Request access to the Transactions product. This can also be done after approval from the Plaid dashboard Products page.
-4. Production approval was received after several days of review.
+1. Create a Plaid account under your personal email and information.
 
-### Production credentials and ownership
+2. Fill out the Plaid production questionnaire. Request access to these products:
 
-After Plaid grants Production access, retrieve the Plaid client ID and Production secret through the approved administrative process. The Production API host is `production.plaid.com` over HTTPS.
+   * **Transactions**, for banking transactions through the transactions sync endpoint.
 
-## B. Configure the Plaid Production source in Foundry
+   * **Investments**, for holdings, securities and investment transactions.
 
-### Source endpoint and secrets
+3. You can also add products later from the Products page of the Plaid dashboard.
 
-1. Set up an egress policy for `production.plaid.com` on port 443.
-2. Use a dedicated REST API source whose base host is `production.plaid.com`. Do not repurpose a Sandbox source by replacing its credentials.
-3. Store the Plaid client ID as `additionalSecretClientId` and the Plaid Production secret as `additionalSecretClientSecret`.
-4. Store a dedicated Production encryption key as `additionalSecretEncryptionKey`. The value should be generated and managed under the organization's approved secret-management process.
-5. Enable exports to this source and, only where approved, exports without markings validation. Permit code repositories, functions, and compute modules in the code-import configuration.
-6. Do not include secret values in source names, descriptions, code-import configuration, documentation, or diagnostics.
+4. Expect production approval to take a couple of days.
+
+### Production credentials
+
+Once Plaid grants Production access, retrieve the Plaid **client ID** and **Production secret** from <https://dashboard.plaid.com/developers/keys>. The Production API host is `production.plaid.com`, and all traffic uses HTTPS on port 443.
+
+## B. Create the egress policies
+
+Create a separate network egress policy for each external host. Don't combine them, and don't use wildcard hosts.
+
+| **Policy** | **Host** | **Port** | **Protocol** | **Used by** |
+| --- | --- | --- | --- | --- |
+| Plaid Production | `production.plaid.com` | 443 | HTTPS | Plaid Production source |
+
+For each policy:
+
+1. In Data Connection, create a new direct-connection egress policy for the host and port above.
+
+2. Submit the policy for approval if your enrollment requires it, and wait for approval before you attach it.
+
+3. Attach the policy only to the matching source.
+
+4. Give each policy a clear name, such as `Plaid Production 443`  and a description saying which source uses it and why.
+
+## C. Configure the Plaid Production source
+
+1. Create a dedicated **REST API** source named **Plaid - Production**, with base host `production.plaid.com`. Don't turn a Sandbox source into a Production one by swapping its credentials.
+
+2. Attach the Plaid Production egress policy.
+
+3. Add these additional secrets:
 
 | **Secret key** | **Purpose** |
 | --- | --- |
-| `additionalSecretClientId` | Plaid client ID used only by approved server-side workloads. |
-| `additionalSecretClientSecret` | Plaid Production secret; environment-specific and highly privileged. |
-| `additionalSecretEncryptionKey` | Dedicated Production token-encryption key when the approved design uses application-level encryption. |
+| `additionalSecretClientId` | Plaid client ID. Only server-side workloads use it. |
+| `additionalSecretClientSecret` | Plaid Production secret. It is specific to this environment and highly privileged. |
+| `additionalSecretEncryptionKey` | Dedicated Production encryption key for Plaid access tokens. Generate and manage it through your organization's secret-management process. |
 
-### Plaid Link Content Security Policy
+1. Under code import, allow **code repositories**, **functions** and **compute modules**. The pipeline transforms and the Plaid App Integration functions (Part 5) need all three.
 
-The Plaid Authentication application's website-hosting configuration must allow Plaid Link to load its scripts and embedded frame and to make required network requests. The current manual Content Security Policy configuration is summarized below.
+2. Turn on exports to this source only where they're approved. Turn on exports without markings validation only if it's explicitly approved.
 
-| **CSP directive** | **Observed additions** | **Production guidance** |
-| --- | --- | --- |
-| `connectSrc` | Plaid CDN, Development, Production, and Sandbox hosts | For a production-only deployment, retain the Plaid CDN and Production hosts. Remove Development and Sandbox unless the same hosted application intentionally supports those environments. |
-| `frameSrc` | Plaid CDN | Required for the embedded Plaid Link frame. Keep the origin narrowly scoped. |
-| `scriptSrc` | Plaid CDN | Required to load the Plaid Link JavaScript bundle. |
-| `imgSrc` | No additions observed | Leave unchanged unless current Plaid documentation or tested production behavior requires another origin. |
-| `mediaSrc` | No additions observed | Leave unchanged unless a documented feature requires it. |
+3. Keep secret values out of source names, descriptions, the code-import configuration, documentation and diagnostics.
 
-> **Production review note:** The current configuration is not proof that every entry is required. Before removing Development or Sandbox origins, confirm whether the deployed application is deliberately reused across environments. After every CSP change, test Plaid Link initialization, institution selection, OAuth return, the public-token callback, and browser-console CSP errors.
+The transforms reach this source through code imports, so the source doesn't support preview.
 
-### Encryption, isolation, and recovery
+## D. Encryption, isolation and recovery
 
-- Store encrypted token history—and, only if explicitly approved, any unencrypted recovery material—in a tightly controlled location. If token deletion fails or test token creation needs cleanup, locally maintained records are essential.
-- Plaid support can generate a list of active tokens, but this can take several days. Maintain an internal inventory so recovery does not depend on that process.
+* The ingestion pipeline decrypts Plaid access tokens only in memory. Never write decrypted tokens to a dataset.
 
-## C. Configure the Foundry Internal API source
+* Keep an internal inventory of active Plaid items (institution, owner, date created) in a tightly controlled location. If a token deletion fails or a test item needs cleanup, Plaid support can produce a list of active tokens, but that can take several days.
 
-### Source endpoint and secrets
+* Store any unencrypted recovery material only if it's explicitly approved, and under the strictest available markings.
 
-1. Create a source named Foundry Internal API and configure it to use the Foundry internal API.
-2. Set up an egress policy for the organization's Foundry site on port 443.
-3. Use a dedicated REST API source whose base URL is that Foundry site. Do not repurpose another environment's source by replacing credentials.
-4. Generate a Foundry token through the approved settings workflow and save it as `additionalSecretFoundryToken` on the source.
-5. Enable exports with webhooks and, only where approved, exports without markings validation. Permit code repositories and webhooks in the code-import configuration.
+## E. Install the packages
 
-## D. Setup the remaining basics
+1. Upload the Plaid Foundry Integration package `.zip` to a Marketplace store in your chosen project folder.
 
-1. Create an admin group that has permissions on all actions. This is the person or who people who manage the budget.
-2. Create an engineering/builder group for at least yourself. Privileged permission for certain workflows/certain notifications.
-3. Your hosting domain should just be your foundry domain.
-4. Upload a png as an icon for your app.
-5. Optionally, I integrate historical monarch transactions. You can just ignore 'old_transactions_migration' though.
+2. Install it. Installation has four stages:
 
-## E. Upload Package to Your Enrollment
+   1. **General setup:** choose the package name and installation location.
 
-The first step is uploading your package to the Foundry Marketplace:
+   2. **Input configuration:** map the **Plaid - Production&#x20;**&#x73;ource and **GENERATE PLACEHOLDERS** for *security\_live\_price* and *holding\_live\_value*. These are leftover from an integration with a live-ish service for security values that I had to exclude from this package.
 
-1. Download the project's `.zip` file from this repository
-2. Access your enrollment's marketplace at:
-   ```
-   {enrollment-url}/workspace/marketplace
-   ```
-3. In the marketplace interface, initiate the upload process:
-   - Select or create a store in your preferred project folder
-   - Click the "Upload to Store" button
-   - Select your downloaded `.zip` file
+3. Upload the Plaid Integration Application package `.zip` to a Marketplace store in your chosen project folder.
 
-![Marketplace Interface](./../_static/upload_product_banner.png)
+   1. **General setup**: choose the name and installation location
 
-## F. Install the Package
+   2. **Input configuration**: NSTR here
 
-After upload, you'll need to install the package in your environment. For detailed instructions, see the [official Palantir documentation](https://www.palantir.com/docs/foundry/marketplace/install-product).
+      1. Domain: put the full subdomain here (e.g. plaid-app-\[whatever domain remains that your developer console generates for domains] You might need to setup a dummy dev console on your stack to see the exact text since mine was a string of letters and numbers followed by a more generic foundry domain.
 
-The installation process has four main stages:
+***
 
-1. **General Setup**
-   - Configure package name
-   - Select installation location
+# Part 2: Data Architecture
 
-2. **Input Configuration**
-   - Configure any required inputs. If no inputs are needed, proceed to next step
-   - Check project documentation for specific input requirements
+## Lineage overview
 
-3. **Content Review**
-   - Review resources to be installed such as Developer Console, the Ontology, and Functions
+```mermaid
+flowchart LR
+  subgraph External
+    P[Plaid Production]
+  end
 
-4. **Validation**
-   - System checks for any configuration errors
-   - Resolve any flagged issues
-   - Initiate installation
+  LT[Link Token object] --> LTE[plaid-link-token_export]
+  ACE[plaid-account_export]
 
-# System Overview Content
+  LTE --> PULL[Plaid pull transforms]
+  ACE --> PULL
+  P --> PULL
 
-1. System context and visual index
-2. FORGE web UI configuration
-3. FORGE mobile UI configuration
-4. Custom widget architecture and UI conventions
-5. Ontology catalog and semantic invariants
-6. Upstream data architecture
-7. Plaid connection setup and operations runbook
-8. Security, monitoring, troubleshooting, and recovery
+  PULL --> AR[plaid_accounts_raw]
+  PULL --> TA[plaid_transactions_added_raw]
+  PULL --> TM[plaid_transactions_modified_raw]
+  PULL --> TR[plaid_transactions_removed_raw]
+  PULL --> NCR[plaid_next_cursor_raw]
+  PULL --> IHR[plaid_investment_holdings_raw]
+  PULL --> IAR[plaid_investment_activity_raw]
 
-## 1. System context and visual index
+  AR --> AH[plaid_account_history] --> ACC[plaid_account]
+  TA --> TP[plaid_transaction_parsed]
+  TM --> TP
+  TR --> TP
+  ACE --> TP
+  TP --> TX[plaid_transaction]
+  TP --> MER[plaid_merchant]
+  NCR --> NC[next_cursor]
 
-FORGE converts external financial and billing data into curated Ontology objects, then exposes operational workflows through Workshop and shared OSDK custom widgets.
+  IHR --> SP[plaid_security_parsed] --> SEC[plaid_security]
+  IHR --> LOTS[plaid_investment_holding_lots]
+  LOTS --> HOLD[plaid_investment_holding]
+  LOTS --> GRANT[plaid_investment_grant]
+  IAR --> IAP[plaid_investment_activity_parsed] --> IA[plaid_investment_activity]
 
-- A production web Workshop application provides the main desktop operational shell.
-- A separate mobile Workshop application provides a compact single-page experience.
-- Both applications use a shared Forge Widget Set backed by a common code repository.
-- A dedicated Plaid Authentication application, backed by its own repository, hosts Plaid Link.
-- A maintained lineage graph describes the end-to-end FORGE data flow.
-- Operational alerts should cover schedule failures, stale data, account health, and indexing freshness.
+  subgraph Placeholders["Placeholders (not populated)"]
+    SLP[security_live_price]
+    HLV[holding_live_value]
+  end
 
-## 2. FORGE web UI configuration
-
-The web Workshop is a production navigation shell combining native Workshop controls, action forms, drawers, object tables, and the shared Forge Widget Set.
-
-| **Surface** | **Implementation** | **Primary inputs** | **Events / behavior** |
-| --- | --- | --- | --- |
-| Dashboard | `budgetResearch` widget | Transaction and Category object sets; current user; reviewer group | Research and review entry point. |
-| Spending | `spendingMonitor` widget | Transaction and Category object sets; current user | Emits payout URL and review-count updates. |
-| Operations | `operations` widget | Subscription, Bill, Merchant, and supporting object sets | Unified operations; updates pending-review and bills-due counts. |
-| Budget Development | `budgetComparison` widget | Budget and Category versions; current user | Compares proposals and supports publication workflows. |
-| Accounts | `accountsOverview` widget | Plaid Account and Transaction object sets; current user | Supports account selection and emits an Add Account event. |
-| Supporting native flows | Workshop drawers, forms, and tables | Member, Subscription, Discount, Bill, Report, Transaction, and archive objects | Invokes declarative and function-backed actions. |
-
-### Web shell behavior
-
-- The current-user identity is passed into widgets as `currentUserId`, bound to the Workshop current-user value; widgets do not call a separate user endpoint.
-- Shared object sets drive widget surfaces and native overlays, keeping filters and selected objects consistent across the shell.
-- Connect Account opens the embedded Plaid Authentication application, completes Plaid Link, persists connection state through an Ontology action, and then closes the overlay.
-- Other production shell surfaces include AIP Analyst, Data Health, billing and reporting, and supporting overlays where configured.
-- A Transactions navigation option remains configured but hidden.
-
-## 3. FORGE mobile UI configuration
-
-The mobile Workshop is a single-page shell over the `mobileDashboard` custom widget. The observed mobile widget release trails the web release by one patch version; this is documented version drift rather than a change made here.
-
-| **Area** | **Configuration** | **Behavior** |
-| --- | --- | --- |
-| Inputs | Transaction and Plaid Account object sets; current-user and reviewer-group values | Provides user-scoped overview and connected-account context. |
-| Internal tabs | Overview, Review, Bills, Accounts | Tabs are internal widget state rather than separate Workshop pages. |
-| Detail flows | Category, transaction, and archive experiences | Supports review and archive operations without leaving the mobile shell. |
-| Bill upload | `uploadBill` widget event | Opens a bottom drawer bound to the Upload and Parse Verizon Bill action. |
-
-## 4. Custom widget architecture and UI conventions
-
-Both applications consume the shared Forge Widget Set. The repository follows common conventions so multiple widgets remain visually and operationally consistent.
-
-- Use the Radix dark theme with a transparent widget background and the shared main stylesheet; do not create widget-specific stylesheets.
-- Use reusable gradient header cards, section cards, standardized row spacing, and managed scroll containers.
-- Floating popovers require solid opaque backgrounds; avoid translucent portal surfaces in the widget runtime.
-- Use custom dark-theme checkbox styling instead of native browser accent coloring.
-- After actions, update React Query caches optimistically and perform a delayed authoritative refetch so Ontology propagation can complete.
-- Never fetch the current user separately; accept `currentUserId` from widget configuration.
-
-> **Amount-display convention:** `originalAmount` preserves the source/display sign: positive is income, credit, or refund and negative is expense or debit. The normalized amount used by FORGE spend analysis is inverted: expenses are positive and income or refunds are negative. Use `originalAmount` for display and coloring; use `amount` for spend charts and settled-spending calculations.
-
-## 5. Ontology catalog and semantic invariants
-
-### Core finance and Plaid
-
-| **Object type** | **Identity / key concept** | **Purpose and important properties** |
-| --- | --- | --- |
-| Transaction | Plaid transaction identity; current-state row | Amounts, date, pending state, categorization, merchant and account references, review state, and audit links. |
-| Plaid Account | Plaid account identity | Balances, display name, type and subtype, connection health, last-seen status, stale or error state, and replacement lineage. |
-| Plaid Merchant | Canonical merchant identity | Canonical name, categorization and normalization state, suggested merges, and merge lineage. |
-| Plaid Link Token | Per-user Plaid connection identity | Encrypted access token, cursor, item and connection metadata, and ownership. This is a credential-bearing object with restricted export. |
-| Archived Transaction | Archive-event identity | Audit history for hidden or archived current-state transactions; it is not a second source of spending totals. |
-| Split Transaction Log | Split-operation identity | Audit log for transaction split operations and their source and derived records. |
-
-### Budgeting and household billing
-
-| **Object type** | **Identity / key concept** | **Business role** |
-| --- | --- | --- |
-| Budget | Budget or version identity | Budget proposal or published snapshot owning a set of Category snapshots. |
-| Category | Category snapshot identity | Budget category, limit, hierarchy, and version or replacement lineage. Structural parent links are distinct from replacement links. |
-| Subscription | Recurring obligation identity | Recurring service, amount and cadence, Category, lifecycle, and many-to-many Member participation. |
-| Discount | Discount identity | Adjustment linked to a Subscription, Member, or generated Bill. |
-| Member | Household member identity | Participant in subscriptions, bills, discounts, and Verizon line-item allocation. |
-| Bill | Generated bill identity | Amount and status generated for a Subscription and Member combination, with optional discounts. |
-| Billing Report | Report identity | Generated billing-period summary and operational reporting artifact. |
-
-### Verizon billing
-
-- Verizon Bill represents parsed bill-level identity, dates, totals, and source-file context.
-- Verizon Line Item represents a parsed line-level charge allocated to a Verizon Bill and Member.
-
-### Relationship semantics
-
-- Transaction links to Plaid Account, canonical Plaid Merchant, Parent, Main, and Sub Category, AI-proposed Alternative Category, and Archived Transaction.
-- Budget owns Category snapshots. Category's structural parent hierarchy is separate from replacement and version lineage.
-- Subscription links to Category and has an editable many-to-many relationship with Member through a dedicated association dataset.
-- Bill links to Subscription and Member. Discount can link to Subscription, Member, or a generated Bill.
-- Verizon Line Item links to Verizon Bill and Member.
-- Plaid Account has replacement-account lineage; Plaid Merchant has merge and suggested-merge self-links.
-
-> **Finance invariants:** Transaction is the authoritative current-state fact. Settled spending normally excludes pending transactions and the Transfer Category. Normalized amount is expense-positive and income or refund-negative. Archived Transaction is audit history and must not be added to current Transaction totals.
-
-### Workshop-facing actions
-
-Representative actions include Category Edits, Update Review Status, Edit Transaction, and Bulk Update Bill Status. The UI also exposes Edit Member; Create, Edit, and Delete Discount; Create, Edit, Delete, Remove, and Link Subscription; Hide Transaction; Add Member; Generate Billing Report; Upload and Parse Verizon Bill; Add Plaid Link Token; Edit Cursor; and Remove Plaid Connection. Some are declarative actions and others are function-backed. Inspect each action's parameters and side effects before changing it.
-
-## 6. Upstream data architecture
-
-### 6.1 Scheduled Plaid ingestion
-
-1. A production REST source targets `production.plaid.com` over HTTPS through an approved egress policy. It is imported into code; source preview is not supported.
-2. A restricted Plaid Link Token export supplies per-user encrypted access-token and cursor state.
-3. A Polars pull repository calls Plaid's accounts endpoint and the paginated transactions synchronization endpoint in batches of 500, decrypts each access token only in memory, and writes append-oriented raw outputs.
-4. Key raw outputs include accounts, added transactions, modified transactions, and removed transactions.
-5. A parsing repository normalizes transaction payloads and account lifecycle and health fields, producing parsed transactions and Plaid Account backing data.
-6. An Ontology repository combines parsed Plaid data with historical Monarch migration input to produce current Transaction and canonical Plaid Merchant backing datasets.
-7. Ontology indexing exposes Transaction, Plaid Account, and Plaid Merchant to the web and mobile applications.
-
-| **Schedule** | **Trigger** | **Failure semantics** | **Purpose** |
-| --- | --- | --- | --- |
-| Plaid Data | Every three hours at minute 15 in `America/New_York` | Abort downstream work on failure | Pull and parse Plaid accounts and transactions. |
-| Plaid Ontology | Update to its parsed input dataset | Continue independent work where possible | Produce current Transaction and canonical Merchant outputs. |
-
-### 6.2 Edit-backed operational objects
-
-Budget, Category, Subscription, Discount, Member, Bill, Billing Report, and Archived Transaction are primarily backed by minimal primary-key datasets with edit-only properties persisted through Ontology Actions. Their operational source of truth is action history and materialized object state rather than a scheduled external pipeline.
-
-### 6.3 Verizon bill ingestion
-
-1. A web or mobile Upload and Parse Verizon Bill action stores the source file in a Verizon bills media set.
-2. The parser combines the source document with Member export context and writes parsed output.
-3. Downstream derivation produces Verizon Bill and Verizon Line Item backing data.
-
-## 7. Plaid connection setup and operations runbook
-
-### Add or update a connection
-
-1. The FORGE Accounts tab widget routes the current user to the embedded Plaid Authentication application via the '+Add Account' button on the top right.
-2. BEFORE linking a new account, however, you must create a budget, even if it is nominal. This is a dependency for all of the categorization functions to run - you will be able to edit them after the fact and correct the breakages, but I really recommend creating some kind of budget on the 'Budget' tab.
-3. The application requests a Plaid Link token for the current environment and launches Plaid Link.
-4. After successful institution authentication, Plaid returns a short-lived public token and connection metadata.
-5. The Add Plaid Link Token action exchanges the public token server-side and stores the encrypted access token plus connection metadata in the Plaid Link Token object.
-6. The scheduled Plaid Data build reads the restricted export, decrypts the access token only in memory, and begins account and transaction synchronization.
-7. Verify the next successful pull, parsed account health, Ontology indexing, and visibility in both FORGE applications.
-
-### Cursor lifecycle
-
-Each transactions synchronization request starts from the persisted cursor and paginates until no further pages remain. The cursor must advance only after all expected outputs for the synchronization have succeeded. Persisting a cursor before output completion can permanently skip changes on the next run. Edit Cursor is therefore the final state transition of a successful synchronization, not an early checkpoint.
-
-### Disconnect a connection
-
-1. Confirm the target user and Plaid item; avoid acting on an account-selection value alone.
-2. Invoke Remove Plaid Connection. The function revokes or removes the Plaid item before deleting the local connection record.
-3. Verify the connection record is removed, account lifecycle fields become inactive or stale as expected, and no further pull attempts use the revoked item.
-
-### Safe manual-run guidance
-
-- Do not reset or edit a cursor as the first response to a failure.
-- Before rerunning, identify whether the failed stage is authentication and egress, raw pull, parsing, current-state curation, or Ontology indexing.
-- Rerun the smallest failed stage whose inputs are complete and unchanged.
-- After recovery, verify row counts and change categories, cursor advancement, account health, latest successful builds, and application freshness.
-
-## 8. Security, monitoring, troubleshooting, and recovery
-
-### Observed security findings — separate review required
-
-> **No remediation was performed by the documentation task.** These are observed risks to review with the application, data, and security owners.
-
-- Plaid Link Token currently represents access-token and public-token-related properties as strings, and its restricted export contains credential-bearing columns.
-- The token object, export, and production source were observed with an inherited organization marking. Confirm markings, roles, and least-privilege access directly; hidden property visibility is not a security boundary.
-- The Plaid Authentication front end currently logs the public token and metadata to the browser console. Remove this logging in a separate code change and rotate or review affected credentials if exposure is suspected.
-- Never copy token values, raw credential-bearing payloads, client credentials, encryption material, environment-file contents, or browser-console payloads into documentation or visuals.
-
-### Monitoring checklist
-
-- [ ] The Plaid Data schedule is active and its latest build completed successfully.
-- [ ] The Plaid Ontology trigger fired after parsed input changed and its outputs succeeded.
-- [ ] The latest pull timestamp is within the expected three-hour window plus operational tolerance.
-- [ ] Plaid Account last-seen and active-state values match expected institution and account state.
-- [ ] Stale-account and item-error flags are reviewed for newly affected connections.
-- [ ] Transaction, Account, and Merchant backing datasets and Ontology indexes are fresh.
-- [ ] Web Accounts and mobile Accounts and Review surfaces display expected current data.
-
-### Failure decision tree
-
-| **Symptom** | **Likely boundary** | **First safe checks** |
-| --- | --- | --- |
-| 401, 403, or token error | Plaid credentials, access token, item state, or encryption and decryption | Confirm source credentials are present, the item is valid, the token decrypts in memory, and no secrets changed unexpectedly. Do not print values. |
-| Network or host failure | Source or egress policy | Confirm the Production host, TLS policy, source import, and egress approval. |
-| Raw succeeds; parsed fails | Schema normalization or unexpected Plaid payload | Inspect non-secret schema and error metadata, isolate the new payload shape, and preserve the current cursor until parsing succeeds. |
-| Parsed succeeds; UI is stale | Ontology curation, indexing, or application cache | Check the Ontology trigger and build, backing outputs, object indexing, and then delayed widget refetch behavior. |
-| Cursor mismatch or missing deltas | Connection state transition | Stop automatic cursor edits, compare last successful raw outputs with the persisted cursor, and recover from a known-good state under owner review. |
+  classDef placeholder stroke-dasharray: 5 5,fill:#f5f5f5,color:#888
+  class SLP,HLV placeholder
 ```
+
+> **About the placeholders:** `security_live_price` and `holding_live_value` are kept as empty slots for a possible future live-pricing integration. They're second datasources on **Security** and **Investment Holding**, so the object types still expect them to exist. They have no upstream inputs and no transforms in this package. You create them at install time with **GENERATE PLACEHOLDERS** (Part 1, step E). Don't build anything on them.
+
+## Folder layout
+
+| **Folder** | **Contents** |
+| --- | --- |
+| `data/ontology/export` | Ontology export views (Link Token, Account) that the pull transforms read. |
+| `data/transform/plaid_pulls` | Append-oriented raw Plaid API responses. |
+| `data/transform/plaid_parsing` | Parsed, normalized Plaid data. |
+| `data/transform/plaid_ontology` | Curated backing datasets for Plaid object types. |
+| `data/ontology` | Placeholder datasets `security_live_price` and `holding_live_value`. Not populated. |
+
+## Repositories
+
+| **Repository role** | **Transforms** |
+| --- | --- |
+| Plaid pulls | `plaid_accounts.py`, `plaid_transactions.py`, `plaid_investments.py` |
+| Plaid parsing | `plaid_accounts_transformed.py`, `plaid_transactions_transformed.py`, `plaid_next_cursor_latest.py`, `plaid_investments_transformed.py`, `plaid_investment_activity_transformed.py` |
+| Plaid Ontology | `plaid_ontology.py`, `plaid_account.py`, `plaid_security.py`, `plaid_investment_holding.py`, `plaid_investment_grant.py`, `plaid_investment_activity.py` |
+
+A Pipeline Builder pipeline, `token_export_history`, snapshots the Link Token export into `plaid-link-token_export_history`. That snapshot is an audit trail of connection records.
+
+## 1. Connection state inputs
+
+| **Dataset** | **Type** | **Role** |
+| --- | --- | --- |
+| `plaid-link-token_export` | View, deduplicated on primary key, latest `__patch_offset` wins, `__is_deleted` honored | One row per Plaid item: encrypted access token, sync cursor, institution, owner, `created` and `last_reauth`. **Contains credentials. Restrict access.** |
+| `plaid-account_export` | View | Current Account state, including manual edits. The pulls use it to scope work, and transaction parsing uses it to resolve account context such as joint accounts and account category. |
+| `plaid-link-token_export_history` | Dataset | Snapshot history of the token export. **Contains credentials. Restrict access.** |
+
+## 2. Raw Plaid pulls
+
+Each pull iterates over the active Link Token rows, decrypts each access token in memory, calls Plaid, and appends the result along with `object_token_primary_key`, `user_id`, institution fields and `pull_timestamp`.
+
+| **Dataset** | **Plaid endpoint** | **Contents** |
+| --- | --- | --- |
+| `plaid_accounts_raw` | Accounts | Accounts plus item struct and `response_json`. |
+| `plaid_transactions_added_raw` | Transactions sync | JSON array of added transactions per page (`added`), with `request_id`. |
+| `plaid_transactions_modified_raw` | Transactions sync | JSON array of modified transactions per page (`modified`). |
+| `plaid_transactions_removed_raw` | Transactions sync | JSON array of removed transaction IDs per page (`removed`). |
+| `plaid_next_cursor_raw` | Transactions sync | `next_cursor` and `has_more` for each page. |
+| `plaid_investment_holdings_raw` | Investments holdings | Full holdings and securities response (`response_json`), with holding, security and account counts. |
+| `plaid_investment_activity_raw` | Investments transactions | Full investment-transactions response over a `start_date` to `end_date` window, with counts. |
+
+Transactions sync pages through results 500 at a time until `has_more` is false.
+
+## 3. Parsing and normalization
+
+| **Dataset** | **Source** | **What it does** |
+| --- | --- | --- |
+| `plaid_account_history` | `plaid_accounts_raw` | Flattens accounts into one row per account per pull. Normalizes balances and item metadata, and adds item error fields (`item_error_type`, `item_error_code`, `item_error_message`, `has_item_error`) and a UTC consent expiration. |
+| `plaid_transaction_parsed` | Added, modified and removed raw transactions, plus `plaid-account_export` | Explodes the JSON arrays into one row per transaction, applies modifications, drops removed IDs, and adds `amount_true` (expense-positive), `account_category` and `source_account_id`. |
+| `next_cursor` | `plaid_next_cursor_raw` | Keeps the latest cursor per Plaid item. Backs **Next Cursor**. |
+| `plaid_security_parsed` | `plaid_investment_holdings_raw` | One row per security from the latest holdings pull, with identifiers (CUSIP, ISIN, SEDOL, FIGI), close price and close date. |
+| `plaid_investment_holding_lots` | `plaid_investment_holdings_raw` | One row per grant or lot (`account:security:lot_index`), with vested and unvested quantity and value, and `implied_unit_value` to detect options. |
+| `plaid_investment_activity_parsed` | `plaid_investment_activity_raw` | One row per investment transaction, with security fields resolved and cancellations flagged. |
+
+## 4. Ontology backing datasets
+
+| **Dataset** | **Object type** | **Notes** |
+| --- | --- | --- |
+| `plaid_account` | Account | Latest state per account, plus lifecycle fields (open and close date, status, last seen, active in Plaid, stale), balance time series IDs and day-change fields. |
+| `plaid_transaction` | Transaction | Current-state transactions. Can optionally combine Plaid data with a legacy transaction migration for history before each account's first Plaid transaction. |
+| `plaid_merchant` | Merchant | Canonical merchant identities derived from transaction merchants. |
+| `next_cursor` | Next Cursor | Sync checkpoint. Pipeline state only. |
+| `plaid_security` | Security | Reference data for securities. |
+| `plaid_investment_holding` | Investment Holding | Lots summed per account and security. |
+| `plaid_investment_grant` | Holding Lot | Individual grants and lots. |
+| `plaid_investment_activity` | Investment Activity | Adds `activity_category`, `is_external_cash_flow`, `month_formatted` and `sign_matches_category`. |
+
+## 5. Placeholder datasets
+
+| **Dataset** | **Object type** | **Status** |
+| --- | --- | --- |
+| `security_live_price` | Security (second datasource) | Placeholder. No inputs, no transform. Its properties are empty (see Part 3). |
+| `holding_live_value` | Investment Holding (second datasource) | Placeholder. No inputs, no transform. Its properties are empty (see Part 3). |
+
+## 6. Schedules
+
+| **Schedule** | **Trigger** | **Failure behavior** | **Purpose** |
+| --- | --- | --- | --- |
+| Plaid Data | Every three hours at minute 15, America/New\_York | Abort downstream work on failure | Pull and parse accounts, transactions and investments. |
+| Plaid Ontology | Its parsed inputs update | Continue independent work where possible | Build the curated backing datasets. |
+
+***
+
+# Part 3: Ontology Reference
+
+| **Object type** | **Primary key** | **Purpose** |
+| --- | --- | --- |
+| Link Token | Connection key | One Plaid item. Holds the encrypted access token, sync cursor, `created` and `last_reauth`. **Contains credentials.** |
+| Next Cursor | Token primary key | Sync checkpoint. Don't use it in financial queries. |
+| Account | Plaid account ID | Balances, type and category, connection health, lifecycle and replacement lineage. |
+| Transaction | Transaction ID | The authoritative current-state fact table for spending, income and cash flow. |
+| Merchant | Entity ID | Canonical merchant identity, with promotion and merge lifecycle. |
+| Security | Plaid security ID | Instrument reference data and the Plaid close price. |
+| Investment Holding | `account_id:security_id` | Position per account and security. |
+| Holding Lot | `account:security:lot_index` | Individual grant or lot. The index is positional and can reshuffle after a vest. |
+| Investment Activity | Investment transaction ID | Buys, sells, dividends, vests, contributions, fees, deposits and withdrawals. |
+
+## Properties not in use
+
+These properties come from the placeholder datasources (Part 2, section 5). Expect them to be empty, and don't use them in calculations.
+
+* **Security:** Effective Price, Effective Price Date, Live Price, Day Change, Day Change %, Previous Close (Finnhub), Day Open, Day High, Day Low, Live Price As Of, Live Price Pulled At, Price Source.
+
+* **Investment Holding:** Live Value, Day Change Value, Change Since Plaid, Price Source, Effective Price Date.
+
+## Calculation rules
+
+**Transactions**
+
+* Filter periods on `Date`.
+
+* Use `Amount`: expenses are positive, and income and refunds are negative. Present income as the negated sum.
+
+* Leave out rows where `Pending` is true, and rows in the **Transfer** parent category.
+
+* Never mix `Amount` with `Source-Signed Amount`. The source-signed value exists only for reconciliation.
+
+* `Review Status` and `AIP Status` are workflow state. Neither one tells you whether a transaction has settled.
+
+**Accounts**
+
+* Group by `Account Category`: Transactional or Investment. Keep Investment balances separate from cash totals.
+
+* For credit and loan accounts, `Current Balance` is the amount owed.
+
+* Leave out accounts where `Joint Account ID` is set. They are duplicate copies of a jointly held account.
+
+* Use `Status` to filter down to accounts in use.
+
+**Investments**
+
+* In Investment Activity, a positive `Amount` means cash *left* the account. That is the **opposite** sign convention from Transaction.
+
+* Leave out rows where `Is Cancelled` is true. Use `Is External Cash Flow` to separate real money movement from internal moves between cash and securities.
+
+* In Investment Holding, `Total Value` includes unvested equity, and `Vested Value` is what you own outright. Option grants are valued at intrinsic value.
+
+* For current valuation, use `Total Value`, or `Vested Value` for what you own outright. Both are as of `Holdings As Of`.
+
+**Merchants**
+
+* Use `Authority Level` to tell whether a merchant is canonical. `Merchant Status` is workflow state, and the two are always written together.
+
+***
+
+# Part 4: Operations
+
+## Connection lifecycle
+
+1. The Plaid App Integration (Part 5) runs Plaid Link, exchanges the public token on the server, and writes a **Link Token** object containing the encrypted access token.
+
+2. The next Plaid Data run reads that token from the export, decrypts it in memory and pulls the data.
+
+3. When the user re-authenticates in update mode, the **Edit Plaid Link Token Metadata** action sets `Last Re-auth`. Use `Last Re-auth`, or `Created` if it's null, to judge how fresh a connection is.
+
+4. To disconnect, revoke the item with Plaid **before** you delete the Link Token record. Then check that the accounts show as inactive or stale and that no further pulls use the item.
+
+## Cursor lifecycle
+
+Each transactions sync starts from the stored cursor and pages through until `has_more` is false. Advance the cursor only after **every** raw output for that sync has been written successfully. If the cursor moves first and a later step fails, the next run will skip those changes permanently.
+
+## Running a stage manually
+
+* Don't reset or edit a cursor as your first response to a failure.
+
+* Work out which stage failed: authentication and egress, raw pull, parsing, curation or indexing.
+
+* Rerun the smallest failed stage whose inputs are complete and unchanged.
+
+* Afterwards, check row counts, cursor advancement, account health and the most recent build timestamps.
+
+## Monitoring checklist
+
+* \[ ] The latest Plaid Data build succeeded, within three hours plus your tolerance.
+
+* \[ ] The Plaid Ontology builds ran after their parsed inputs changed.
+
+* \[ ] `Last Seen In Plaid`, `Is Active In Plaid`, `Stale` and item error flags have been reviewed.
+
+* \[ ] Investment Holding `Holdings As Of` is recent.
+
+* \[ ] Object indexes are fresh for every object type listed in Part 3.
+
+## Troubleshooting
+
+| **Symptom** | **Likely cause** | **First checks** |
+| --- | --- | --- |
+| Plaid 401, 403 or `ITEM_LOGIN_REQUIRED` | Credentials, item state or decryption | Confirm the source secrets exist, check the item error fields on Account, and re-authenticate the item if needed. Never print token values. |
+| Network failure to Plaid | Egress policy or source | Confirm the host and port 443 policy is approved and attached to the right source. |
+| Raw pull succeeds, parsing fails | Unexpected payload shape | Inspect the schema and error metadata only. Keep the current cursor until parsing succeeds. |
+| Parsing succeeds, objects are stale | Curation or indexing | Check the Ontology builds, the backing datasets and the object indexing status. |
+| Missing transaction changes | Cursor got ahead of the outputs | Stop editing the cursor, compare the last successful raw outputs against the stored cursor, and recover from a known-good state with the owner. |
+
+## Security notes
+
+* Link Token, `plaid-link-token_export` and `plaid-link-token_export_history` contain credential material. Restrict them with markings and roles. Hiding a property doesn't secure it.
+
+* Make sure every downstream dataset inherits the right markings. Raw pull outputs include full Plaid responses.
+
+* Never copy tokens, raw responses that contain credentials, client secrets or encryption keys into documentation, notebooks or logs.
+
+***
+
+# Part 5: Plaid App Integration Workflow
+
+The **Plaid App Integration** workflow groups the resources that create, re-authenticate, inspect and remove Plaid connections. It is the only path that writes **Link Token** objects, and the ingestion pipeline depends on those objects.
+
+## Components
+
+| **Resource** | **Type** | **Role** |
+| --- | --- | --- |
+| Plaid Integration App | Developer Console application (OSDK) | Hosts the front end that runs Plaid Link and calls the functions and actions below. |
+| `plaid_generate_link_token` (`plaidGenerateLinkToken`) | Deployed-app function | Requests a Plaid Link token for a new Production connection. |
+| `plaid_generate_link_token_update_mode` (`plaidGenerateLinkTokenUpdateMode`) | Deployed-app function | Requests a Link token in update mode for an existing item, so the user can re-authenticate without creating a new access token. |
+| `plaid_generate_sandbox_link_token` | Deployed-app function | Requests a Sandbox Link token. Testing only, with no Ontology binding. Don't expose it in a production-only deployment. |
+| `plaid_get_item` (`plaidGetItem`) | Deployed-app function | Fetches Plaid item status (health, errors, consent) for an existing connection. |
+| `plaid_remove_item` (`plaidRemoveAccessToken`) | Deployed-app function | Revokes the item with Plaid and removes the connection. |
+| `add_public_and_access_token_to_plaid_object_type` | Ontology edit function (code repository) | Exchanges the public token for an access token on the server, encrypts it, and creates the Link Token object. |
+| **Add Plaid Link Token** (`create-plaid-public-token-store`) | Function-backed action | Wraps the exchange function. Parameters: `publicToken`, `metadata`, `user`, `prod` (boolean, true for Production). Generates a UUID primary key. |
+| **Edit Plaid Link Token Metadata** (`edit-token`) | Declarative action | Overwrites `metadata` and stamps `last_reauth` with the current time on an existing Link Token. Doesn't touch Access Token. Parameters: Plaid Link Token, `metadata`. |
+
+> **API name note:** Keep **Edit Plaid Link Token Metadata** on the API name `edit-token`, because that's what the deployed app calls. Renaming it, or giving another action this API name, breaks re-auth write-back until the app is updated and redeployed.
+
+## Flows
+
+### New connection
+
+1. The user opens the Plaid Integration App.
+
+2. The app calls `plaidGenerateLinkToken` and launches Plaid Link with the returned token.
+
+3. The user authenticates with their institution. Plaid Link returns a short-lived public token and session metadata in the browser.
+
+4. The app submits **Add Plaid Link Token** with the public token, the metadata, the current user and `prod = true`.
+
+5. On the server, `add_public_and_access_token_to_plaid_object_type` exchanges the public token, encrypts the access token with `additionalSecretEncryptionKey`, and creates the Link Token.
+
+6. The next Plaid Data run picks up the connection (Part 4).
+
+### Re-authentication (update mode)
+
+1. The user selects an existing connection that needs re-auth, for example one showing `ITEM_LOGIN_REQUIRED` in the Account item error fields.
+
+2. The app calls `plaidGenerateLinkTokenUpdateMode` for that item and launches Plaid Link.
+
+3. When the session succeeds, the app submits **Edit Plaid Link Token Metadata**. It refreshes the linked sub-account metadata and sets `Last Re-auth`.
+
+4. The existing access token stays in use. The next pull should clear the item errors.
+
+### Status check
+
+* `plaidGetItem` returns the live Plaid item status for a connection. Use it to confirm an error before you ask the user to re-authenticate.
+
+### Disconnect
+
+1. Confirm the target user and Plaid item.
+
+2. Call `plaidRemoveAccessToken`. It revokes the item with Plaid before the local connection record is deleted.
+
+3. Check that no further pulls use the item, and that the affected Accounts show as inactive or stale.
+
+## Configuration requirements
+
+* **Source access:** the deployed-app functions and the exchange function import the **Plaid - Production** source. Its code-import settings must allow functions and compute modules (Part 1, step C).
+
+* **Application scope:** the Developer Console application's OSDK scope must include the Link Token object type, both actions, and the functions above.
+
+* **Content Security Policy:** the application's hosting configuration must let Plaid Link load:
+
+  * `scriptSrc` and `frameSrc`: the Plaid CDN.
+
+  * `connectSrc`: the Plaid CDN and the Production host.
+
+* Remove the Sandbox and Development origins unless the same app intentionally serves those environments. After every CSP change, test Link initialization, institution selection, the OAuth return, the public-token callback, and the browser console for CSP errors.
+
+* **Permissions:** both actions have a validation rule that requires the submitter to hold a specific organization marking. Set it to your own organization's marking when you install. Users without it get "You do not have permission to submit this action."
+
+* **Front-end hygiene:** never log the public token, Link metadata or any token values to the browser console.
+
+## Troubleshooting
+
+| **Symptom** | **Likely cause** | **First checks** |
+| --- | --- | --- |
+| Plaid Link won't open | CSP blocking, or Link token generation failed | Check the browser console for CSP errors and check `plaidGenerateLinkToken` executions. |
+| Link succeeds but no Link Token appears | Exchange failure or permission denial | Check executions of **Add Plaid Link Token** and its exchange function, and confirm the submitter holds the required organization marking. |
+| Re-auth succeeds but `Last Re-auth` doesn't change | Action API name mismatch | Confirm **Edit Plaid Link Token Metadata** still has the API name `edit-token`. |
+| Item errors persist after re-auth | Pull not yet run, or the wrong item was updated | Wait for the next Plaid Data run, then call `plaidGetItem` for the item. |
+| Disconnected institution still pulls | Link Token not removed | Confirm `plaidRemoveAccessToken` succeeded and that the record no longer appears in `plaid-link-token_export`. |
