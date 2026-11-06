@@ -1,0 +1,52 @@
+name: GPT-GlassOnion quality evidence
+
+on:
+  pull_request:
+    paths:
+      - "GPT-GlassOnion/**"
+      - ".github/workflows/gpt-glassonion-quality.yml"
+  push:
+    branches:
+      - develop
+      - feature/gpt-glassonion
+    paths:
+      - "GPT-GlassOnion/**"
+      - ".github/workflows/gpt-glassonion-quality.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: glassonion-quality-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: GPT-GlassOnion/osdk_app
+    steps:
+      - name: Check out exact commit
+        uses: actions/checkout@v4
+
+      - name: Use Node 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Install dependencies
+        run: npm install --ignore-scripts --no-audit --no-fund
+
+      - name: Type-check, test, build, and generate evidence
+        run: npm run quality
+
+      - name: Upload deployment-readiness evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: glassonion-readiness-${{ github.sha }}
+          path: GPT-GlassOnion/osdk_app/dist/evidence/deployment-readiness.json
+          if-no-files-found: error
+          retention-days: 30

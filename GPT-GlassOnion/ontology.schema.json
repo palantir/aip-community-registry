@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "GPT-GlassOnion Ontology Mapping",
+  "type": "object",
+  "required": [
+    "types",
+    "objects",
+    "links"
+  ],
+  "properties": {
+    "types": {
+      "type": "array"
+    },
+    "objects": {
+      "type": "array"
+    },
+    "links": {
+      "type": "array"
+    },
+    "geo": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "FeatureCollection"
+        },
+        "features": {
+          "type": "array"
+        }
+      }
+    }
+  }
+}
