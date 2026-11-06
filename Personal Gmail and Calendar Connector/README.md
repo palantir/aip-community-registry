@@ -28,14 +28,14 @@ Follow this link (https://console.cloud.google.com/auth/clients) to create a Goo
 
 * Type: Web application
 * Name: Palantir Foundry
-* Authorised JavaScript origins: <insert the base URL of your Foundry account>
+* Authorised JavaScript origins: the base URL of your Foundry enrollment
 * Authorised redirect URIs: https://developers.google.com/oauthplayground
 
 Once you have created, copy your CLIENT_ID and CLIENT_SECRET, you will need them later. You can always access them at any time by viewing your client [here](https://console.cloud.google.com/auth/clients).
 
 #### Enable APIs
 
-Follow [this guide](https://support.google.com/googleapi/answer/6158841?hl=en) to enable the GMail and Calendar APIs for your client.
+Follow [this guide](https://support.google.com/googleapi/answer/6158841?hl=en) to enable the Gmail and Calendar APIs for your client.
 
 #### Add relevant scopes
 
@@ -52,21 +52,20 @@ You will need to obtain a refresh token to enable long-lived access from Foundry
 
 ### 2. Set Up a Data Source
 
-The Marketplace package will require a Data Source with your google credentials as an input.
+The Marketplace package will require a Data Source with your Google credentials as an input.
 
 1. On your Foundry instance, create a new Data Connection REST API source. Config:
     1. Connection Type: Direct connection
     2. Domain base URL: googleapis.com
     3. Authentication: None
     4. Define Additional Secrets
-        1. Name: “RefreshToken”, Value: copy and paste your refresh token from the step above Untitled
-        2. Name: “ClientId”, Value: copy and paste your Client Id from Untitled
-        3. Name: “ClientSecret”, Value: copy and paste your Client Secret Untitled
+        1. Name: “RefreshToken”, Value: copy and paste your refresh token from the step above
+        2. Name: “ClientId”, Value: copy and paste your Client Id from the Google Client created above
+        3. Name: “ClientSecret”, Value: copy and paste your Client Secret
     5. Network connectivity: add the following egress policies
         1. gmail.googleapis.com (for Gmail API access)
         2. www.googleapis.com (for other services e.g. Calendar API access)
         3. oauth2.googleapis.com (for authentication)
-        4. 
     6. Code import configuration: toggle “Allow this source to be imported into code repositories” and “Allow this to be used in Compute Modules”
     7. Export configuration: toggle “Enable exports to this source”
     8. Save
@@ -90,18 +89,18 @@ The first step is uploading your package to the Foundry Marketplace:
 
 ## Install the Package
 
-After upload, you'll need to install the package in your environment. For detailed instructions, see the official Palantir documentation.
+After upload, you'll need to install the package in your environment. For detailed instructions, see the [official Palantir documentation](https://www.palantir.com/docs/foundry/marketplace/install-product).
 
 The installation process has four main stages:
 
 1. **General Setup**
    - Configure package name
    - Select installation location
-3. **Input Configuration**
+2. **Input Configuration**
    - Configure any required inputs. The required inputs are “Google OAuth Client” where you will map the Data Source you created above. You will also have to map the GPT-4o mini and text-embedding-ada-002 models - you should map to the same models on your enrollment.
    - Check project documentation for specific input requirements
-4. **Content Review**
+3. **Content Review**
    - Review resources to be installed such as Code Repositories, Pipeline Builder, the Ontology, and Functions
-5. **Validation**
+4. **Validation**
    - System checks for any configuration errors
    - Resolve any flagged issues
