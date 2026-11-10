@@ -1,0 +1,8 @@
+*.p8
+.env
+.claude
+__pycache__
+.gradle/
+build/
+dist/
+node_modules/

@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "lib": [ "ESNext" ],
+    "target": "ES2021",
+    "declaration": true,
+    "declarationDir": "../dist",
+    "outDir": "../dist",
+    "rootDir": ".",
+    "removeComments": true,
+    "strict": true,
+    "sourceMap": true,
+    "preserveConstEnums": true,
+    "skipLibCheck": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "noUncheckedIndexedAccess": true,
+    "types": [ "node" ]
+  },
+  "include": [ "*.ts", "**/*.ts" ]
+}

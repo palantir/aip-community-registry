@@ -1,0 +1,33 @@
+{
+  "name": "@my-functions/my-functions",
+  "version": "0.0.0",
+  "description": "My useful functions",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [ "dist", "README.md", "package.json" ],
+  "dependencies": {
+    "@palantir/functions-sources": "0.62.0",
+    "@osdk/api": "2.22.0",
+    "@osdk/client": "2.22.0",
+    "@osdk/functions": "1.10.0",
+    "@osdk/language-models": "0.6.0",
+    "@opentelemetry/api": "^1.9.0",
+    "@opentelemetry/api-logs": "^0.215.0",
+    "@ontology/sdk": "^0.1.0"
+  },
+  "devDependencies": {
+    "@foundry/functions-typescript-runtime": "0.254.0",
+    "@types/node": "^22.13.0",
+    "vitest": "^4.0.18"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "license": "UNLICENSED"
+}
