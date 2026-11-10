@@ -1,0 +1,19 @@
+{
+  "name": "test-node-wa-bot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "NODE_ENV=test node test.js",
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@palantir/compute-module": "^0.2.7",
+    "dotenv": "^16.5.0",
+    "whatsapp": "^0.0.5-Alpha",
+    "whatsapp-business": "^1.14.3"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  }
+}

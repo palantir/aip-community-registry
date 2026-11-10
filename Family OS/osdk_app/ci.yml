@@ -1,0 +1,62 @@
+# DO NOT MODIFY THIS FILE
+env:
+  NODE_DIST_URI:
+    uri-role: node-dist-uri
+  ARTIFACTS_API_URI:
+    uri-role: foundry-artifacts-api
+  API_GATEWAY_URI:
+    uri-role: api-gateway
+
+required-job-token-capabilities:
+  - osdk-app
+
+java-version: JAVA_11
+
+jobs:
+  osdk-app-publish:
+    timeout: 20 minutes
+    steps:
+      - |
+        set -euo pipefail
+        if [[ -n "$EXTERNAL_CONNECTIONS_CA_PATH" ]]; then
+          export NODE_EXTRA_CA_CERTS="${NODE_EXTRA_CA_CERTS:-$EXTERNAL_CONNECTIONS_CA_PATH}"
+          export SSL_CERT_FILE="${SSL_CERT_FILE:-$EXTERNAL_CONNECTIONS_CA_PATH}"
+        fi
+
+        if [[ -n "${JEMMA_TAG:-}" ]]; then
+          export VERIFY_ENV_PRODUCTION=true
+        fi
+
+        export NO_COLOR=1
+        export FOUNDRY_TOKEN="${JOB_TOKEN}"
+        . .jemma/settings.sh
+        . .jemma/install-node.sh
+
+        npm_registry=${ARTIFACTS_API_URI}/repositories/${REPOSITORY_RID}/contents/release/npm/
+        npm_registry_without_protocol=${npm_registry#https://}
+        npm config set --location project registry=${npm_registry}
+        npm config set --location project //${npm_registry_without_protocol}:_authToken=\${FOUNDRY_TOKEN}
+        git update-index --assume-unchanged .npmrc
+
+        npm install
+        npm run lint
+        npm run test
+        npm run build
+
+        if [[ -n "${STEMMA_PULL_REQUEST_RID:-}" && -z "${JEMMA_TAG:-}" ]]; then
+          snapshot_id="foundry.v1@${REPOSITORY_RID}@${STEMMA_PULL_REQUEST_RID}@$(git rev-parse HEAD)"
+          echo "Uploading snapshot version for PR preview with id: ${snapshot_id}"
+          npx @osdk/cli@latest site deploy \
+            --foundryUrl "${API_GATEWAY_URI%/api}" \
+            --uploadOnly false \
+            --snapshot \
+            --snapshotId $snapshot_id
+          exit 0
+        fi
+
+        if [[ -z "${JEMMA_TAG:-}" ]]; then
+          echo "No jemma tag found skipping deploying website to artifacts"
+          exit 0
+        fi
+
+        npx @osdk/cli@latest site deploy --foundryUrl "${API_GATEWAY_URI%/api}"

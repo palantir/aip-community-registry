@@ -1,0 +1,12 @@
+{
+  "foundryUrl": "<YOUR URL HERE>",
+  "site": {
+    "application": "<YOUR **APPLICATION** RID HERE>",
+    "directory": "./dist",
+    "autoVersion": {
+      "type": "git-describe",
+      "tagPrefix": ""
+    },
+    "uploadOnly": false
+  }
+}
