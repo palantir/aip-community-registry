@@ -1,0 +1,11 @@
+{
+  "name": "SENRA",
+  "shortDescription": "India Supply Chain Fragility Index",
+  "longDescription": "Ranks all 28 Indian states and 8 UTs by supply chain fragility across 7 dimensions using live government data",
+  "category": "Supply Chain / Logistics",
+  "author": "Harsh Menon",
+  "github": "https://github.com/Harshdemoni/senra",
+  "website": "https://senra.in",
+  "technologies": ["FastAPI", "Next.js", "TypeScript", "PostgreSQL", "Redis"],
+  "tags": ["supply-chain", "india", "logistics", "risk-analysis"]
+}
