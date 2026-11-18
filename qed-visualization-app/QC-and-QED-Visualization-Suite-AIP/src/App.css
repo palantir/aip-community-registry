@@ -1,0 +1,50 @@
+/* Define theme colors and animation variables */
+:root {
+  --primary-bg-color: #282c34;
+  --accent-color: #61dafb;
+  --header-text-color: #ffffff;
+  --logo-spin-duration: 20s;
+}
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+/* Only animate logo if the user does not prefer reduced motion */
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: logo-spin var(--logo-spin-duration) linear infinite;
+  }
+}
+
+/* Header styling */
+.App-header {
+  background-color: var(--primary-bg-color);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: var(--header-text-color);
+}
+
+/* Link styling */
+.App-link {
+  color: var(--accent-color);
+}
+
+/* Keyframes for logo spin animation */
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
